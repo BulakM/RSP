@@ -1,3 +1,9 @@
 app:
     resource: '@AppBundle/Controller/'
     type: annotation
+login_check:
+    path:   /login_check
+    defaults: { _controller: AppBundle:Default:loginCheck }
+navigate:
+    path:   /navigate
+    defaults: { _controller: AppBundle:Default:navigate }

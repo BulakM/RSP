@@ -2,20 +2,46 @@
 
 namespace AppBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 class DefaultController extends Controller
 {
     /**
-     * @Route("/", name="homepage")
-     */
-    public function indexAction(Request $request)
-    {
-        // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
-        ]);
-    }
+      * @Route("/", name="home")
+      * @param Request             $request
+      * @param AuthenticationUtils $authUtils
+      * @return \Symfony\Component\HttpFoundation\Response
+      */
+      public function indexAction(Request $request, AuthenticationUtils $authUtils)
+      {
+        // get the login error if there is one
+        $error = $authUtils->getLastAuthenticationError();
+
+        // last username entered by the user
+        $lastUsername = $authUtils->getLastUsername();
+
+        return $this->render('layout/main.html.twig', array(
+            'last_username' => $lastUsername,
+            'error'         => $error,
+        ));
+      }
+
+      public function loginCheckAction()
+      {
+      }
+
+      public function logoutCheckAction()
+      {
+      }
+
+      /**
+       * @Route("/navigate", name="navigate")
+       */
+      public function navigateAction()
+      {
+          return $this->redirectToRoute('home');
+      }
 }
