@@ -212,7 +212,7 @@ class Prispevek
      * @param \AppBundle\Entity\Prispevatel $prispevatel
      * @return Prispevek
      */
-    public function setStav(\AppBundle\Entity\Prispevatel $prispevatel)
+    public function setPrispevatel(\AppBundle\Entity\Prispevatel $prispevatel)
     {
         $this->prispevatel = $prispevatel;
         return $this;
