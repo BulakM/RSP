@@ -53,6 +53,12 @@ class Prispevek
     private $casopis;
 	
 	/**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Tema", inversedBy="prispevky")
+     * @ORM\JoinColumn(name="tema", referencedColumnName="id")
+     */
+    private $tema;
+	
+	/**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Prispevatel", inversedBy="prispevky")
 	 * @ORM\JoinColumn(name="prispevatel", referencedColumnName="id")
      */
@@ -194,6 +200,27 @@ class Prispevek
     public function setCasopis(\AppBundle\Entity\Casopis $casopis)
     {
         $this->casopis = $casopis;
+        return $this;
+    }
+	
+	/**
+     * Get tema
+     *
+     * @return \AppBundle\Entity\Tema
+     */
+    public function getTema()
+    {
+        return $this->tema;
+    }
+	
+	/**
+     * Set tema
+     * @param \AppBundle\Entity\Tema $tema
+     * @return Prispevek
+     */
+    public function setTema(\AppBundle\Entity\Tema $tema)
+    {
+        $this->tema = $tema;
         return $this;
     }
 	
