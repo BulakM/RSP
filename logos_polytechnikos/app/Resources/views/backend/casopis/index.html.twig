@@ -1,0 +1,59 @@
+{% extends  'layout/main.html.twig' %}
+
+{% block pagetitle %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Administrace příspšvků</h1>
+        </div>
+    </div>
+{% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="panel-heading">
+            <form role="filter">
+                <div class="col-lg-8 form-group">
+                    <label>Rok vydání</label>
+                    <select class="form-control" name="cislo">
+                        <option>Všechny</option>
+                        <option>2017</option>
+                        <option>2016</option>
+                        <option>2015</option>
+                    </select>
+                </div>
+            </form>
+            <div class="col-lg-offset-1 col-lg-2">
+                <button type="button" class="btn btn-primary" style="margin-top: 25px;">Přidat časopis</button>
+            </div>
+        </div>
+        <br><br><br>
+        <div class="panel-body">
+            <div id="magList">
+                <table id="List" width="100%">
+                    <thead>
+                    <tr>
+                        <th>Název čísla</th>
+                        <th>Datum vydání</th>
+                        <th>Ovladací prvky</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Lorem Ipsum</td>
+                        <td>01 2016</td>
+                        <td>
+                            <button type="button" class="btn btn-danger">Smazat</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            var table = $('#List').DataTable();
+        });
+    </script>
+{% endblock %}

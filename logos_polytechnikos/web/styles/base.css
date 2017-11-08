@@ -1,3 +1,15 @@
 .margin-top-5px {
   margin-top: 5px;
 }
+
+.navbar {
+  max-height: 50px;
+}
+
+#hodnoceni th {
+  padding: 1px;
+}
+
+#hodnoceni td {
+  padding: 1px;
+}
