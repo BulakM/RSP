@@ -1,0 +1,116 @@
+{% extends  'layout/main.html.twig' %}
+
+{% block pagetitle %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Napsat recenzi k:</h1>
+        </div>
+    </div>
+{% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="panel-body">
+            <div class="row">
+                <form role="form">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label>Recenze</label>
+                            <textarea class="form-control" rows="3" placeholder="Vložte sem Váši recenzi" name="text" style="min-height: 20vh;"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 form-group">
+                        <label>Hodnocení</label>
+                        <table id="hodnoceni">
+                            <thead>
+                            <tr>
+                                <th>Oblast</th>
+                                <th style="padding-left: 7px"></th>
+                                <th>1</th>
+                                <th>2</th>
+                                <th>3</th>
+                                <th>4</th>
+                                <th>5</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    Odbornost:
+                                </td>
+                                <td style="padding-left: 7px"></td>
+                                <td>
+                                    <input type="radio" name="radOdbornost" id="odbornost1" value="1">
+                                </td>
+                                <td>
+                                    <input type="radio" name="radOdbornost" id="odbornost2" value="2">
+                                </td>
+                                <td>
+                                    <input type="radio" name="radOdbornost" id="odbornost3" value="3">
+                                </td>
+                                <td>
+                                    <input type="radio" name="radOdbornost" id="odbornost4" value="4">
+                                </td>
+                                <td>
+                                    <input type="radio" name="radOdbornost" id="odbornost5" value="5">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Stylistika:
+                                </td>
+                                <td style="padding-left: 7px"></td>
+                                <td>
+                                    <input type="radio" name="radStylistika" id="stylistika1" value="1">
+                                </td>
+                                <td>
+                                    <input type="radio" name="radStylistika" id="stylistika2" value="2">
+                                </td>
+                                <td>
+                                    <input type="radio" name="radStylistika" id="stylistika3" value="3">
+                                </td>
+                                <td>
+                                    <input type="radio" name="radStylistika" id="stylistika4" value="4">
+                                </td>
+                                <td>
+                                    <input type="radio" name="radStylistika" id="stylistika5" value="5">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Pravopis:
+                                </td>
+                                <td style="padding-left: 7px"></td>
+                                <td>
+                                    <input type="radio" name="radPravopis" id="pravopis1" value="1">
+                                </td>
+                                <td>
+                                    <input type="radio" name="radPravopis" id="pravopis2" value="2">
+                                </td>
+                                <td>
+                                    <input type="radio" name="radPravopis" id="pravopis3" value="3">
+                                </td>
+                                <td>
+                                    <input type="radio" name="radPravopis" id="pravopis4" value="4">
+                                </td>
+                                <td>
+                                    <input type="radio" name="radPravopis" id="pravopis5" value="5">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-lg-12">
+                        <button type="submit" class="btn btn-default" style="float: right; margin-right: inherit">Pošli recenzi</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            var table = $('#List').DataTable();
+        });
+    </script>
+{% endblock %}
