@@ -19,7 +19,7 @@ class Casopis
     private $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="date")
      */
     private $rok;
 
@@ -46,7 +46,7 @@ class Casopis
 	/**
      * Get rok
      *
-     * @return integer
+     * @return date
      */
     public function getRok()
     {
@@ -56,7 +56,7 @@ class Casopis
 	/**
      * Set rok
      *
-     * @return integer
+     * @return Casopis
      */
     public function setRok($rok)
     {
