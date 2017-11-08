@@ -19,16 +19,14 @@ class Casopis
     private $id;
 
     /**
-     * @ORM\Column(type="string")
-     * @ORM\Rok
+     * @ORM\Column(type="date")
      */
-    private $rok
+    private $rok;
 
     /**
      * @ORM\Column(type="integer")
-     * @ORM\Cislo
      */
-    private $cislo
+    private $cislo;
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Prispevek", mappedBy="casopis")
@@ -48,7 +46,7 @@ class Casopis
 	/**
      * Get rok
      *
-     * @return integer
+     * @return date
      */
     public function getRok()
     {
@@ -58,7 +56,7 @@ class Casopis
 	/**
      * Set rok
      *
-     * @return integer
+     * @return date
      */
     public function setRok($rok)
     {
