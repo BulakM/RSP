@@ -10,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class DefaultController extends Controller
 {
     /**
-      * @Route("/", name="home")
+      * @Route("/home", name="homepage")
       * @param Request             $request
       * @param AuthenticationUtils $authUtils
       * @return \Symfony\Component\HttpFoundation\Response

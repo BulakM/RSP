@@ -1,30 +1,35 @@
 # To get started with security, check out the documentation:
 # https://symfony.com/doc/current/security.html
-security:
 
-    # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+security:
+    encoders:
+        FOS\UserBundle\Model\UserInterface: bcrypt
+
+    role_hierarchy:
+        ROLE_REDAKTOR:       ROLE_REDAKTOR
+        ROLE_RECENZENT:      ROLE_RECENZENT
+        ROLE_EDITOR:         ROLE_EDITOR
+
     providers:
-        in_memory:
-            memory: ~
+        fos_userbundle:
+            id: fos_user.user_provider.username
 
     firewalls:
-        # disables authentication for assets and the profiler, adapt it according to your needs
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-
         main:
-            anonymous: ~
+            pattern: ^/
             form_login:
                 login_path: login
                 check_path: /login_check
-                failure_path: home
-                default_target_path: home
+                failure_path: /home
+                default_target_path: /redakce
+                provider: fos_userbundle
+                csrf_token_generator: security.csrf.token_manager
+                # if you are using Symfony < 2.8, use the following config instead:
+                # csrf_provider: form.csrf_provider
 
-            # activate different ways to authenticate
+            logout:       true
+            anonymous:    true
 
-            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-            #http_basic: ~
-
-            # https://symfony.com/doc/current/security/form_login_setup.html
-            #form_login: ~
+    access_control:
+        - { path: ^/home, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/redakce, role: [ROLE_REDAKTOR, ROLE_RECENZENT, ROLE_EDITOR] }

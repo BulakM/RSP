@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{% block title %}Logos Polytechnikos{% endblock %}</title>
+
+    <link href="{{ asset('/bower_components/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('/bower_components/sb-admin-2/css/plugins/metisMenu/metisMenu.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('/bower_components/sb-admin-2/css/sb-admin-2.css') }}" rel="stylesheet">
+    <link href="{{ asset('/bower_components/sb-admin-2/font-awesome-4.1.0/css/font-awesome.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('/styles/base.css') }}" rel="stylesheet">
+
+    <script src="{{ asset('/bower_components/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('/bower_components/sb-admin-2/js/sb-admin-2.js') }}"></script>
+</head>
+<body>
+<div id="wrapper">
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">
+                <img src="/design/logos_polytechnikos.png" alt="logos_polytechnikos" />
+            </a>
+        </div>
+        <!-- /.navbar-header -->
+        <ul class="nav navbar-top-links navbar-right">
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-user fa-fw"></i> {{ app.user.jmeno }} {{ app.user.prijmeni }} <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li class="text-center"><b>{{ app.user.jmeno }}</b>
+                    </li>
+                    <li class="divider"></li>
+                    <li><a href="{{ path('logout') }}"><i class="fa fa-sign-out fa-fw"></i> Odhlásit se</a>
+                    </li>
+                </ul>
+                <!-- /.dropdown-user -->
+            </li>
+        </ul>
+
+        <div id="navbar-default-left-menu" class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav navbar-collapse">
+                <ul class="nav" id="side-menu">
+                  <li class="sidebar-search">
+                      <div class="input-group custom-search-form">
+                          <input type="text" disabled class="form-control" placeholder="Search...">
+                              <span class="input-group-btn">
+                              <button class="btn btn-default" disabled type="button">
+                                  <i class="fa fa-search"></i>
+                              </button>
+                          </span>
+                      </div>
+                      <!-- /input-group -->
+                  </li>
+                  <li>
+                      <a href="#"><i class="fa fa-dashboard fa-fw"></i>Přehled příspěvků</a>
+                  </li>
+                </ul>
+            </div>
+            <!-- /.sidebar-collapse -->
+        </div>
+        <!-- /.navbar-static-side -->
+    </nav>
+
+    <div id="page-wrapper">
+        <div class="row">
+            <h2 class="page-header">{% block pagetitle %}{% endblock %}</h2>
+            <div class="flash-messenger">
+                {% for flash_message in app.session.flashBag.get('error') %}
+                    <div class="alert alert-danger" role="alert">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        {{ flash_message|trans }}
+                    </div>
+                {% endfor %}
+
+                {% for flash_message in app.session.flashBag.get('notice') %}
+                    <div class="alert alert-info" role="alert">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        {{ flash_message|trans }}
+                    </div>
+                {% endfor %}
+
+                {% for flash_message in app.session.flashBag.get('success') %}
+                    <div class="alert alert-success" role="alert">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        {{ flash_message|trans }}
+                    </div>
+                {% endfor %}
+            </div>
+            {% if error %}
+              <div class="alert alert-danger" role="alert">
+                  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    {{ error.messageKey|trans(error.messageData) }}
+              </div>
+            {% endif %}
+                {% block body %}{% endblock %}
+        </div>
+      </div>
+  </div>
+
+  {% block javascripts %}{% endblock %}
+  {% block modal %}
+      <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+              </div>
+          </div>
+      </div>
+  {% endblock %}
+</body>
+
+</html>

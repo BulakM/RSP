@@ -7,3 +7,5 @@ login_check:
 navigate:
     path:   /navigate
     defaults: { _controller: AppBundle:Default:navigate }
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"

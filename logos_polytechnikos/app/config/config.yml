@@ -72,3 +72,10 @@ assetic:
     use_controller: '%kernel.debug%'
     filters:
         cssrewrite: ~
+fos_user:
+    db_driver: orm # other valid values are 'mongodb' and 'couchdb'
+    firewall_name: main
+    user_class: AppBundle\Entity\User
+    from_email:
+        address: test@example.com
+        sender_name: Me
