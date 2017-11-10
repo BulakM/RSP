@@ -33,6 +33,21 @@ class Casopis
      */
     private $prispevky;
 
+	
+	/**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="casopis")
+	 * @ORM\JoinColumn(name="autor", referencedColumnName="id")
+     */
+    private $autor;
+	
+	 /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Stav", inversedBy="prispevky")
+     * @ORM\JoinColumn(name="stav", referencedColumnName="id")
+     */
+    private $stav;
+	
+	
+	
 	/**
      * Get id
      *
@@ -87,6 +102,48 @@ class Casopis
 		    return $this;
     }
 
+	/**
+     * Get stav
+     *
+     * @return \AppBundle\Entity\Stav
+     */
+    public function getStav()
+    {
+        return $this->stav;
+    }
+	
+	/**
+     * Set stav
+     * @param \AppBundle\Entity\Stav $stav
+     * @return Casopis
+     */
+    public function setStav(\AppBundle\Entity\Stav $stav)
+    {
+        $this->stav = $stav;
+        return $this;
+    }
+	
+	/**
+     * Get autor
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getAutor()
+    {
+        return $this->autor;
+    }
+	
+	/**
+     * Set autor
+     * @param \AppBundle\Entity\User $autor
+     * @return Casopis
+     */
+    public function setAutor(\AppBundle\Entity\User $autor)
+    {
+        $this->autor = $autor;
+        return $this;
+    }
+	
     /**
      * Add prispevky
      *
