@@ -1,4 +1,4 @@
-{% extends  'layout/main.html.twig' %}
+{% extends  'layout/mainBackend.html.twig' %}
 
 {% block pagetitle %}
     <div class="row">
@@ -9,7 +9,7 @@
 {% endblock %}
 {% block body %}
     <div class="row">
-        <div class="panel-heading">
+        <div class="panel-heading">  {#Do tohoto divu přidat filtr pro filtrování časopisu#}
             <form role="filter">
                 <div class="col-lg-8 form-group">
                     <label>Rok vydání</label>
@@ -30,14 +30,14 @@
             <div id="magList">
                 <table id="List" width="100%">
                     <thead>
-                    <tr>
+                    <tr>      {#Hlavička tabulky#}
                         <th>Název čísla</th>
                         <th>Datum vydání</th>
                         <th>Ovladací prvky</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
+                    <tr>     {#Položky#}
                         <td>Lorem Ipsum</td>
                         <td>01 2016</td>
                         <td>

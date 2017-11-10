@@ -1,4 +1,4 @@
-{% extends  'layout/main.html.twig' %}
+{% extends  'layout/mainBackend.html.twig' %}
 
 {% block pagetitle %}
     <div class="row">
@@ -9,7 +9,7 @@
 {% endblock %}
 {% block body %}
     <div class="row">
-        <div class="panel-heading">
+        <div class="panel-heading">  {#Vložit filtr pro filtrování příspěvků#}
             <form role="filter">
                 <div class="col-lg-6 form-group">
                     <label>Číslo časopisu</label>
@@ -41,7 +41,7 @@
                         <th>Seznam příspěvků</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody>  {#Položky příspěvků#}
                     <tr>
                         <td class="panel panel-default">
                             <div class="panel-heading">

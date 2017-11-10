@@ -1,9 +1,9 @@
-{% extends  'layout/main.html.twig' %}
+{% extends  'layout/mainBackend.html.twig' %}
 
 {% block pagetitle %}
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Napsat recenzi k:</h1>
+            <h1 class="page-header">Napsat recenzi k: {#vložit identifikaci příspěvku#}</h1>
         </div>
     </div>
 {% endblock %}
@@ -11,7 +11,7 @@
     <div class="row">
         <div class="panel-body">
             <div class="row">
-                <form role="form">
+                <form role="form">  {#Formulář pro recenzi#}
                     <div class="col-lg-12">
                         <div class="form-group">
                             <label>Recenze</label>
