@@ -9,3 +9,10 @@ navigate:
     defaults: { _controller: AppBundle:Default:navigate }
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+app:
+    resource: '@AppBundle/Controller/Frontend/'
+    type: annotation    
+backend:
+    resource: '@AppBundle/Controller/Backend/'
+    type: annotation
+    prefix: /redakce

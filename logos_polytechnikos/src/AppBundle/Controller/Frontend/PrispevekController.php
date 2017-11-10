@@ -7,15 +7,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
-use AppBundle\Form\Frontend\PrispevekType;
-use AppBundle\Form\Frontend\PrispevekFindType;
+use AppBundle\Form\PrispevekType;
+use AppBundle\Form\PrispevekFindType;
 
 use AppBundle\Entity\Prispevek;
 
+/**
+ * @Route("/prispevek")
+ */
 class PrispevekController extends Controller
 {
   /**
-   * @Route("/add/prispevek", name="add_prispevek")
+   * @Route("/add", name="add_prispevek")
    */
   public function addPrispevekAction(Request $request)
   {
@@ -44,7 +47,7 @@ class PrispevekController extends Controller
   }
 
   /**
-   * @Route("/find/prispevek", name="find_prispevek")
+   * @Route("/find", name="find_prispevek")
    */
   public function findPrispevekAction(Request $request)
   {

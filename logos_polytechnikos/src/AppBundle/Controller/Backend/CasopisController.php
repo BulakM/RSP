@@ -20,7 +20,7 @@ class CasopisController extends Controller
     */
     public function indexAction(Request $request)
     {
-      $casopisy = $this->getDoctrine()->getRepository(Casopis::class)->findBy(['stav' => '1'], ['datumVytvoreni' => 'DESC']);
+      $casopisy = $this->getDoctrine()->getRepository(Casopis::class)->findAll();
 
       return $this->render('backend/casopis/index.html.twig', array(
           'pagination' => $casopisy,

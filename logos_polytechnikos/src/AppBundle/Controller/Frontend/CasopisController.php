@@ -10,24 +10,27 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 use AppBundle\Entity\Casopis;
 
+/**
+  * @Route("/casopis")
+  */
 class CasopisController extends Controller
 {
   /**
-    * @Route("/casopis", name="index_casopis")
+    * @Route("/", name="index_casopis")
     */
     public function indexAction(Request $request)
     {
-      $casopisy = $this->getDoctrine()->getRepository(Casopis::class)->findBy(['stav' => '1'], ['datumVytvoreni' => 'DESC']);
+      $casopisy = $this->getDoctrine()->getRepository(Casopis::class)->findAll();
 
-      return $this->render('layout/mainBackend.html.twig', array(
+      return $this->render('frontend/casopis/index.html.twig', array(
           'pagination' => $casopisy,
       ));
     }
 
     /**
-      * @Route("/casopis", name="index_casopis")
+      * @Route("/download/{casopis}", name="download_casopis")
       */
-      public function downloadAction(Request $request)
+      public function downloadAction(Request $request, Casopis $casopis)
       {
         $file = null; // Stáhnout balík pro správu souborů
 

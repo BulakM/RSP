@@ -18,13 +18,12 @@ class Prispevatel
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-	
+
 	/**
      * @ORM\Column(type="string")
-     * @ORM\Email
      */
     private $email;
-	
+
 	/**
      * Get id
      *
@@ -34,7 +33,7 @@ class Prispevatel
     {
         return $this->id;
     }
-	
+
 	/**
      * Get email
      *
@@ -44,7 +43,7 @@ class Prispevatel
     {
         return $this->email;
     }
-	
+
 	/**
      * Set email
      * @param string $email
@@ -55,6 +54,5 @@ class Prispevatel
         $this->email = $email;
 		return $this;
     }
-	
-}
 
+}

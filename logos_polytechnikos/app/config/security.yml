@@ -23,11 +23,12 @@ security:
                 failure_path: /home
                 default_target_path: /redakce
                 provider: fos_userbundle
-                csrf_token_generator: security.csrf.token_manager
                 # if you are using Symfony < 2.8, use the following config instead:
                 # csrf_provider: form.csrf_provider
-
-            logout:       true
+            logout:
+                path: /logout
+                target: /home
+                invalidate_session:   true
             anonymous:    true
 
     access_control:

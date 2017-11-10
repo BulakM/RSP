@@ -21,16 +21,6 @@ class User extends BaseUser
     protected $id;
 
     /**
-     * @ORM\Column(type="string", unique=true)
-     */
-    protected $username;
-
-    /**
-     * @ORM\Column(type="string", nullable=TRUE)
-     */
-    protected $password;
-
-    /**
      * @ORM\Column(type="string")
      */
     private $jmeno;
