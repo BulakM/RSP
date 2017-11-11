@@ -24,6 +24,11 @@ class Prispevatel
      */
     private $email;
 
+    public function __toString()
+    {
+        return $this->email;
+    }
+
 	/**
      * Get id
      *

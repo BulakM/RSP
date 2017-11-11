@@ -6,9 +6,10 @@ security:
         FOS\UserBundle\Model\UserInterface: bcrypt
 
     role_hierarchy:
-        ROLE_REDAKTOR:       ROLE_REDAKTOR
-        ROLE_RECENZENT:      ROLE_RECENZENT
-        ROLE_EDITOR:         ROLE_EDITOR
+        ROLE_REDAKTOR:      [ROLE_REDAKTOR]
+        ROLE_RECENZENT:     [ROLE_RECENZENT]
+        ROLE_EDITOR:        [ROLE_EDITOR]
+        ROLE_ADMIN:         [ROLE_ADMIN]
 
     providers:
         fos_userbundle:
@@ -33,4 +34,4 @@ security:
 
     access_control:
         - { path: ^/home, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/redakce, role: [ROLE_REDAKTOR, ROLE_RECENZENT, ROLE_EDITOR] }
+        - { path: ^/redakce, role: IS_AUTHENTICATED_FULLY }

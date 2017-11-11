@@ -1,4 +1,4 @@
-{% extends  'layout/main.html.twig' %}
+{% extends  'layout/mainBackend.html.twig' %}
 
 {% block pagetitle %}
     <div class="row">
@@ -10,52 +10,64 @@
 {% block body %}
     <div class="row">
         <div class="panel-heading">
-            <form role="filter">
-                <div class="col-lg-8 form-group">
-                    <label>Filtr uživatelů</label>
-                    <select class="form-control" name="cislo">
-                        <option>Všechny</option>
-                        <option>Admin</option>
-                        <option>Recenzent</option>
-                    </select>
-                </div>
-            </form>
-            <div class="col-lg-offset-1 col-lg-2">
-                <button type="button" class="btn btn-primary" style="margin-top: 25px;">Přidat uživatele</button>
-            </div>
+          {#
+          <section id="filtr"
+                   class="{% if filter_form.vars.value is not empty %}filtered{% endif %} hidden-print open">
+              <h1 data-toggle="tooltip" data-placement="top" title="Pro podrobnější vyhledávání a filtrování příspevků klikněte.">
+                  <i class="glyphicon glyphicon-search"></i>
+                  Filtr časopisů
+                  <i class="glyphicon glyphicon-chevron-down pull-right filtr-opener"></i>
+              </h1>
+              <div class="form-group">
+                {{ form_start(filter_form) }}
+                {{ form_widget(filter_form) }}
+                <input type="submit" class="btn btn-primary" value="Filtrovat">
+                {% if filter_form.vars.value is not empty %}
+                    <a href="{{ path("index_casopis") }}" class="btn btn-danger">Zrušit filtry</a>
+                {% endif %}
+                {{ form_end(filter_form) }}
+              </div>
+              {% if filter_form.vars.value is not empty %}
+                  <div class="filter-footer">
+                      <a href="{{ path("index_casopis") }}" class="btn btn-danger btn-xs">
+                          <i class="glyphicon glyphicon-remove"></i>
+                          Zrušit filtr
+                      </a>
+                  </div>
+              {% endif %}
+          </section>
+          #}
         </div>
         <br><br><br>
         <div class="panel-body">
-            <div id="magList">
-                <table id="List" width="100%">
-                    <thead>
-                    <tr>
-                        <th>Jméno uživatele</th>
-                        <th>Email uživatele</th>
-                        <th>Telefon</th>
-                        <th>Ovladací prvky</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>Lorem Ipsum</td>
-                        <td>Lorem.Ipsum@dotor.sit</td>
-                        <td>65427612436</td>
-                        <td>
-                            <button type="button" class="btn btn-primary">Upravit</button>
-                            <button type="button" class="btn btn-danger">Smazat</button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+            <table class="table">
+                <thead>
+                <tr>
+                  <th>{{ knp_pagination_sortable(pagination, 'Uživatelské jméno', 'u.username') }}</th>
+                  <th>{{ knp_pagination_sortable(pagination, 'Jméno', 'u.jmeno') }}</th>
+                  <th>{{ knp_pagination_sortable(pagination, 'Příjmení', 'u.prijmeni') }}</th>
+                  <th>{{ knp_pagination_sortable(pagination, 'Role', 'u.role') }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for uzivatel in pagination %}
+                <tr>
+                    <td>{{ uzivatel.username }}</td>
+                    <td>{{ uzivatel.jmeno}}</td>
+                    <td>{{ uzivatel.prijmeno }}</td>
+                    <td>{% for role in uzivatel.role %}{{ role }}{% if not loop.last %}, {% endif %}{% endfor %}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary">Upravit</button>
+                        <button type="button" class="btn btn-danger">Smazat</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 {% endblock %}
 {% block javascripts %}
     <script>
-        $(document).ready(function () {
-            var table = $('#List').DataTable();
-        });
+
     </script>
 {% endblock %}

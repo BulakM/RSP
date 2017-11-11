@@ -7,8 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Table()
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="PrispevekRepository")
  */
 class Prispevek
 {
@@ -18,54 +17,57 @@ class Prispevek
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-	
+
 	/**
      * @ORM\Column(type="string", unique=true)
      */
     protected $hash;
-	
+
 	/**
      * @ORM\Column(type="string")
      */
     private $nazev;
-	
+
 	/**
      * @ORM\Column(type="string")
      */
-    private $text;	
-	
+    private $text;
+
 	/**
      * @ORM\Column(type="datetime")
      */
     private $datumVytvoreni;
-	
-	
+
+
 	 /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Stav", inversedBy="prispevky")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Stav")
      * @ORM\JoinColumn(name="stav", referencedColumnName="id")
      */
     private $stav;
-	
+
 	/**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Casopis", inversedBy="prispevky")
 	 * @ORM\JoinColumn(name="casopis", referencedColumnName="id")
      */
     private $casopis;
-	
+
 	/**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Tema", inversedBy="prispevky")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Tema")
      * @ORM\JoinColumn(name="tema", referencedColumnName="id")
      */
     private $tema;
-	
+
 	/**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Prispevatel", inversedBy="prispevky")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Prispevatel")
 	 * @ORM\JoinColumn(name="prispevatel", referencedColumnName="id")
      */
     private $prispevatel;
-	
-	
-	
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Recenze", mappedBy="prispevek")
+     */
+    private $recenze;
+
 	/**
      * Get id
      *
@@ -75,7 +77,7 @@ class Prispevek
     {
         return $this->id;
     }
-	
+
 	/**
      * Get hash
      *
@@ -85,7 +87,7 @@ class Prispevek
     {
         return $this->hash;
     }
-	
+
 	/**
      * Set hash
      * @param string $hash
@@ -96,7 +98,7 @@ class Prispevek
         $this->hash = $hash;
 		return $this;
     }
-	
+
 	/**
      * Get nazev
      *
@@ -106,7 +108,7 @@ class Prispevek
     {
         return $this->nazev;
     }
-	
+
 	/**
      * Set nazev
      * @param string $nazev
@@ -117,7 +119,7 @@ class Prispevek
         $this->nazev = $nazev;
 		return $this;
     }
-	
+
 	/**
      * Get text
      *
@@ -127,7 +129,7 @@ class Prispevek
     {
         return $this->text;
     }
-	
+
 	/**
      * Set text
      * @param string $text
@@ -138,29 +140,29 @@ class Prispevek
         $this->text = $text;
 		return $this;
     }
-	
+
 	/**
      * Get datumVytvoreni
      *
      * @return integer
      */
-    public function getDatum()
+    public function getDatumVytvoreni()
     {
         return $this->datumVytvoreni;
     }
-	
+
 	/**
      * Set datumVytvoreni
      * @param datetime $datumVytvoreni
      * @return Prispevek
      */
-    public function setDatum($datumVytvoreni)
+    public function setDatumVytvoreni($datumVytvoreni)
     {
         $this->datumVytvoreni = $datumVytvoreni;
 		return $this;
     }
-	
-	
+
+
 	/**
      * Get stav
      *
@@ -170,7 +172,7 @@ class Prispevek
     {
         return $this->stav;
     }
-	
+
 	/**
      * Set stav
      * @param \AppBundle\Entity\Stav $stav
@@ -181,7 +183,7 @@ class Prispevek
         $this->stav = $stav;
         return $this;
     }
-	
+
 	/**
      * Get casopis
      *
@@ -191,7 +193,7 @@ class Prispevek
     {
         return $this->casopis;
     }
-	
+
 	/**
      * Set casopis
      * @param \AppBundle\Entity\Casopis $casopis
@@ -202,7 +204,7 @@ class Prispevek
         $this->casopis = $casopis;
         return $this;
     }
-	
+
 	/**
      * Get tema
      *
@@ -212,7 +214,7 @@ class Prispevek
     {
         return $this->tema;
     }
-	
+
 	/**
      * Set tema
      * @param \AppBundle\Entity\Tema $tema
@@ -223,7 +225,7 @@ class Prispevek
         $this->tema = $tema;
         return $this;
     }
-	
+
 	/**
      * Get prispevatel
      *
@@ -233,7 +235,7 @@ class Prispevek
     {
         return $this->prispevatel;
     }
-	
+
 	/**
      * Set prispevatel
      * @param \AppBundle\Entity\Prispevatel $prispevatel
@@ -244,5 +246,38 @@ class Prispevek
         $this->prispevatel = $prispevatel;
         return $this;
     }
-}
 
+    /**
+     * Add recenze
+     *
+     * @param \AppBundle\Entity\Recenze $recenze
+     *
+     * @return Prispevek
+     */
+    public function addRecenze(\AppBundle\Entity\Recenze $recenze)
+    {
+        $this->recenze[] = $recenze;
+
+        return $this;
+    }
+
+    /**
+     * Remove recenze
+     *
+     * @param \AppBundle\Entity\Recenze $recenze
+     */
+    public function removeRecenze(\AppBundle\Entity\Recenze $recenze)
+    {
+        $this->recenze->removeElement($recenze);
+    }
+
+    /**
+     * Get recenze
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRecenze()
+    {
+        return $this->recenze;
+    }
+}

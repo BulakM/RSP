@@ -1,135 +1,90 @@
-{% extends  'layout/main.html.twig' %}
+{% extends 'layout/mainBackend.html.twig' %}
 
 {% block pagetitle %}
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Administrace příspšvků</h1>
-        </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <h1 class="page-header">Administrace příspěvků</h1>
     </div>
+  </div>
 {% endblock %}
 {% block body %}
-    <div class="row">
-        <div class="panel-heading">
-            <form role="filter">
-                <div class="col-lg-6 form-group">
-                    <label>Číslo časopisu</label>
-                    <select class="form-control" name="cislo">
-                        <option>Všechny</option>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </select>
-                </div>
-                <div class="col-lg-6 form-group">
-                    <label>Téma časopisu</label>
-                    <select class="form-control" name="tema">
-                        <option>Všechny</option>
-                        <option>tema 1</option>
-                        <option>rybicky nesmrdi</option>
-                    </select>
-                </div>
-            </form>
-        </div>
-        <br><br><br>
-        <div class="panel-body">
-            <div id="magList">
-                <table id="List" width="100%">
-                    <thead>
-                    <tr>
-                        <th>Seznam příspěvků</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
-                                       aria-expanded="false" class="collapsed">Jméno příspěvku 1</a>
-                                </h4>
-                            </div>
-                            <div id="collapseOne" class="panel-collapse collapse" aria-expanded="false"
-                                 style="height: 0px;">
-                                <div class="panel-body">
-                                    <div class="text">
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-                                        nostrud
-                                        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                                        irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                                        nulla
-                                        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-                                        officia
-                                        deserunt mollit anim id est laborum.
-                                    </div>
-                                    <div style="float: right">
-                                        <button type="button" class="btn btn-primary">Změnit stav</button>
-                                        <button type="button" class="btn btn-danger">Smazat</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse2nd"
-                                       aria-expanded="false" class="collapsed">Jméno příspěvku 2</a>
-                                </h4>
-                            </div>
-                            <div id="collapse2nd" class="panel-collapse collapse" aria-expanded="false"
-                                 style="height: 0px;">
-                                <div class="panel-body">
-                                    <div class="text">
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-                                        nostrud
-                                        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                                        irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                                        nulla
-                                        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-                                        officia
-                                        deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur
-                                        adipisicing elit, sed do eiusmod tempor
-                                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-                                        nostrud
-                                        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                                        irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                                        nulla
-                                        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-                                        officia
-                                        deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur
-                                        adipisicing elit, sed do eiusmod tempor
-                                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-                                        nostrud
-                                        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                                        irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                                        nulla
-                                        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-                                        officia
-                                        deserunt mollit anim id est laborum.
-                                    </div>
-                                    <div style="float: right">
-                                        <button type="button" class="btn btn-primary">Změnit stav</button>
-                                        <button type="button" class="btn btn-danger">Smazat</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+  <div class="row">
+    <div class="panel-heading">
+      {#
+      <section id="filtr"
+               class="{% if filter_form.vars.value is not empty %}filtered{% endif %} hidden-print open">
+          <h1 data-toggle="tooltip" data-placement="top" title="Pro podrobnější vyhledávání a filtrování příspevků klikněte.">
+              <i class="glyphicon glyphicon-search"></i>
+              Filtr časopisů
+              <i class="glyphicon glyphicon-chevron-down pull-right filtr-opener"></i>
+          </h1>
+          <div class="form-group">
+            {{ form_start(filter_form) }}
+            {{ form_widget(filter_form) }}
+            <input type="submit" class="btn btn-primary" value="Filtrovat">
+            {% if filter_form.vars.value is not empty %}
+                <a href="{{ path("index_casopis") }}" class="btn btn-danger">Zrušit filtry</a>
+            {% endif %}
+            {{ form_end(filter_form) }}
+          </div>
+          {% if filter_form.vars.value is not empty %}
+              <div class="filter-footer">
+                  <a href="{{ path("index_casopis") }}" class="btn btn-danger btn-xs">
+                      <i class="glyphicon glyphicon-remove"></i>
+                      Zrušit filtr
+                  </a>
+              </div>
+          {% endif %}
+      </section>
+      #}
     </div>
+    <br><br><br>
+    <div class="panel-body">
+      <table class="table">
+        <thead>
+          <tr>
+              <th>{{ knp_pagination_sortable(pagination, 'Datum Vytvoření', 'p.datumVytvoreni') }}</th>
+              <th>{{ knp_pagination_sortable(pagination, 'Název', 'p.nazev') }}</th>
+              <th>{{ knp_pagination_sortable(pagination, 'Text', 'p.text') }}</th>
+              <th>{{ knp_pagination_sortable(pagination, 'Téma', 't.nazev') }}</th>
+              <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for prispevek in pagination %}
+          <tr>
+            <td>{{ prispevek.datumVytvoreni|date('Y.m.d H.i.s') }}</td>
+            <td>{{ prispevek.nazev }}</td>
+            <td>{{ prispevek.text|truncate(250, true) }}</td>
+            <td>{{ prispevek.tema }}</td>
+            <td>
+              <a href="#"
+                 class="btn btn-info">
+                  <span class="glyphicon glyphicon-search"></span>
+              </a>
+              <a href="#"
+                 class="btn btn-primary">
+                  <span class="glyphicon glyphicon-pencil"></span>
+              </a>
+              <a href="#"
+                 class="btn btn-danger">
+                  <span class="glyphicon glyphicon-remove"></span>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="clearfix"></div>
+      <div class="navigation text-center">
+          {{ knp_pagination_render(pagination) }}
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 {% block javascripts %}
-    <script>
-        $(document).ready(function () {
-            var table = $('#List').DataTable();
-        });
-    </script>
+<script>
+
+</script>
 {% endblock %}

@@ -18,12 +18,17 @@ class Stav
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-	
+
 	/**
      * @ORM\Column(type="string")
      */
     private $nazev;
-	
+
+    public function __toString()
+    {
+        return $this->nazev;
+    }
+
 	/**
      * Get id
      *
@@ -33,7 +38,7 @@ class Stav
     {
         return $this->id;
     }
-	
+
 	/**
      * Get nazev
      *
@@ -43,7 +48,7 @@ class Stav
     {
         return $this->nazev;
     }
-	
+
 	/**
      * Set nazev
      * @param string $nazev
@@ -55,4 +60,3 @@ class Stav
 		return $this;
     }
 }
-

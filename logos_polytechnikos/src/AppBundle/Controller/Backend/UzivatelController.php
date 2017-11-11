@@ -20,11 +20,20 @@ class UzivatelController extends Controller
     */
     public function indexAction(Request $request)
     {
-        $uzivatele = $this->getDoctrine()->getRepository(User::class)->findAll();
+      $filter_form = $this->createForm(UzivatelFilterType::Class);
+      $filter_form->handleRequest($request);
 
-        return [
-            'pagination' => $uzivatele
-        ];
+      $uzivatele = $this->getDoctrine()->getRepository(Uzivatel::class)
+          ->setPaginatorAndQueryUpdater(
+              $this->get('knp_paginator'),
+              $this->get('lexik_form_filter.query_builder_updater')
+          )
+          ->findAllWithPaginator(30, $request->query->getInt('page', 1), $filterForm);
+
+      return $this->render('backend/uzivatel/index.html.twig', array(
+        'pagination' => $uzivatele,
+        'filter_form' => $filter_form->createView()
+      ));
     }
 
   /**
@@ -50,6 +59,19 @@ class UzivatelController extends Controller
 
       return $this->render(
             'backend/uzivatel/add.html.twig',
+            [
+                'form' => $form->createView(),
+            ]
+      );
+    }
+
+  /**
+    * @Route("/heslo/{user}", name="change_heslo")
+    */
+    public function hesloAction(Request $request, User $user)
+    {
+      return $this->render(
+            'backend/uzivatel/heslo.html.twig',
             [
                 'form' => $form->createView(),
             ]

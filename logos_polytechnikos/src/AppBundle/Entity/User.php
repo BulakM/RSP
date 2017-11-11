@@ -8,8 +8,7 @@ use \Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
- * @ORM\Table(name="user")
+ * @ORM\Entity(repositoryClass="UserRepository")
  */
 class User extends BaseUser
 {

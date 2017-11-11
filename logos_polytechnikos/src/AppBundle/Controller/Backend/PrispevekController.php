@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 use AppBundle\Form\RecenzeType;
+use AppBundle\Form\PrispevekFilterType;
 
 use AppBundle\Entity\Prispevek;
 use AppBundle\Entity\Stav;
@@ -17,14 +18,23 @@ use AppBundle\Entity\Stav;
 class PrispevekController extends Controller
 {
   /**
-    * @Route("/", name="index_prispevek_backend")
+    * @Route("/{stav}", name="index_prispevek_backend")
     */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request, Stav $stav)
     {
-      $prispevky = $this->getDoctrine()->getRepository(Prispevek::class)->findAll();
+      $filter_form = $this->createForm(PrispevekFilterType::Class);
+      $filter_form->handleRequest($request);
+
+      $prispevky = $this->getDoctrine()->getRepository(Prispevek::class)
+          ->setPaginatorAndQueryUpdater(
+              $this->get('knp_paginator'),
+              $this->get('lexik_form_filter.query_builder_updater')
+          )
+          ->findAllWithPaginator(30, $request->query->getInt('page', 1), $filter_form, $stav->getId(), $this->getUser());
 
       return $this->render('backend/prispevek/index.html.twig', array(
-          'pagination' => $prispevky,
+        'pagination' => $prispevky,
+        'filter_form' => $filter_form->createView()
       ));
     }
 

@@ -13,3 +13,33 @@
 #hodnoceni td {
   padding: 1px;
 }
+
+#filtr {
+  margin-top: 15px;
+  margin-bottom: 10px;
+  padding: 10px 10px 0;
+  background: #f8f8f8;
+  border: 1px solid #e7e7e7;
+}
+#filtr h1{
+  font-size:18px;
+  margin:0 -10px;
+  padding:0 10px 10px;
+  cursor:pointer
+}
+#filtr form{
+    margin:10px 0;
+    display:none
+}
+#filtr.open h1{
+  border-bottom:2px solid #e7e7e7;
+}
+#filtr.open form{
+  display:block;
+}
+#filtr.open .filter-footer{
+  display:none
+}
+#filtr .filter-footer{
+  margin-bottom:10px
+}

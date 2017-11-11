@@ -1,59 +1,95 @@
-{% extends  'layout/main.html.twig' %}
+{% extends  'layout/mainBackend.html.twig' %}
 
 {% block pagetitle %}
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Administrace příspšvků</h1>
+            <h1 class="page-header">Administrace časopisů</h1>
         </div>
     </div>
 {% endblock %}
 {% block body %}
     <div class="row">
         <div class="panel-heading">
-            <form role="filter">
-                <div class="col-lg-8 form-group">
-                    <label>Rok vydání</label>
-                    <select class="form-control" name="cislo">
-                        <option>Všechny</option>
-                        <option>2017</option>
-                        <option>2016</option>
-                        <option>2015</option>
-                    </select>
-                </div>
-            </form>
-            <div class="col-lg-offset-1 col-lg-2">
-                <button type="button" class="btn btn-primary" style="margin-top: 25px;">Přidat časopis</button>
-            </div>
+          {#
+          <section id="filtr"
+                   class="{% if filter_form.vars.value is not empty %}filtered{% endif %} hidden-print open">
+              <h1 data-toggle="tooltip" data-placement="top" title="Pro podrobnější vyhledávání a filtrování příspevků klikněte.">
+                  <i class="glyphicon glyphicon-search"></i>
+                  Filtr časopisů
+                  <i class="glyphicon glyphicon-chevron-down pull-right filtr-opener"></i>
+              </h1>
+              <div class="form-group">
+                {{ form_start(filter_form) }}
+                {{ form_widget(filter_form) }}
+                <input type="submit" class="btn btn-primary" value="Filtrovat">
+                {% if filter_form.vars.value is not empty %}
+                    <a href="{{ path("index_casopis") }}" class="btn btn-danger">Zrušit filtry</a>
+                {% endif %}
+                {{ form_end(filter_form) }}
+              </div>
+              {% if filter_form.vars.value is not empty %}
+                  <div class="filter-footer">
+                      <a href="{{ path("index_casopis") }}" class="btn btn-danger btn-xs">
+                          <i class="glyphicon glyphicon-remove"></i>
+                          Zrušit filtr
+                      </a>
+                  </div>
+              {% endif %}
+          </section>
+          #}
         </div>
         <br><br><br>
         <div class="panel-body">
-            <div id="magList">
-                <table id="List" width="100%">
-                    <thead>
-                    <tr>
-                        <th>Název čísla</th>
-                        <th>Datum vydání</th>
-                        <th>Ovladací prvky</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>Lorem Ipsum</td>
-                        <td>01 2016</td>
-                        <td>
-                            <button type="button" class="btn btn-danger">Smazat</button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+            <table class="table">
+                <thead>
+                <tr>
+                  <th>{{ knp_pagination_sortable(pagination, 'Rok', 'c.rok') }}</th>
+                  <th>{{ knp_pagination_sortable(pagination, 'Číslo', 'c.cislo') }}</th>
+                  <th>{{ knp_pagination_sortable(pagination, 'Ročník', 'c.rocnik') }}</th>
+                  <th>{{ knp_pagination_sortable(pagination, 'Autor', 'u.username') }}</th>
+                  <th>{{ knp_pagination_sortable(pagination, 'Témata', 't.nazev') }}</th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for casopis in pagination %}
+                  <tr>
+                      <td>{{ casopis.rok }}</td>
+                      <td>{{ casopis.cislo }}</td>
+                      <td>{{ casopis.rocnik }}</td>
+                      <td>{{ casopis.autor.username }}</td>
+                      <td>{% for tema in casopis.temata %}{{ tema }}{% if not loop.last %}, {% endif %}{% endfor %}</td>
+                      <td class="text-right">
+                        <a href="{{ asset('uploads/casopisy/' ~ casopis.casopis) }}"
+                           class="btn btn-default">
+                            <span class="glyphicon glyphicon-download-alt"></span>
+                        </a>
+                        <a href="#"
+                           class="btn btn-info">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </a>
+                        <a href="#"
+                           class="btn btn-primary">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                        <a href="#"
+                           class="btn btn-danger">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </a>
+                      </td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="clearfix"></div>
+            <div class="navigation text-center">
+                {{ knp_pagination_render(pagination) }}
             </div>
         </div>
     </div>
 {% endblock %}
 {% block javascripts %}
     <script>
-        $(document).ready(function () {
-            var table = $('#List').DataTable();
-        });
+
     </script>
 {% endblock %}

@@ -79,3 +79,6 @@ fos_user:
     from_email:
         address: test@example.com
         sender_name: Me
+knp_paginator:
+    template:
+        pagination: '@KnpPaginator/Pagination/twitter_bootstrap_v3_pagination.html.twig'

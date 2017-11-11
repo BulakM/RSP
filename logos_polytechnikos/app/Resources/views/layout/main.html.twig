@@ -16,11 +16,15 @@
     <link href="{{ asset('/bower_components/sb-admin-2/font-awesome-4.1.0/css/font-awesome.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/styles/base.css') }}" rel="stylesheet">
     <link href="https://nightly.datatables.net/css/jquery.dataTables.css" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('/bower_components/select2/dist/css/select2.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('/bower_components/select2-bootstrap-theme/dist/select2-bootstrap.css') }}" rel="stylesheet" />
 
     <script src="{{ asset('/bower_components/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('/bower_components/sb-admin-2/js/sb-admin-2.js') }}"></script>
     <script src="{{ asset('/bower_components/sb-admin-2/js/plugins/dataTables/jquery.dataTables.js') }}"></script>
+    <script src="{{ asset('/bower_components/select2/dist/js/select2.min.js') }}"></script>
+    <script src="{{ asset('/js/base.js') }}"></script>
 
 </head>
 <body>
@@ -83,7 +87,21 @@
                       <!-- /input-group -->
                   </li>
                   <li>
-                      <a href="#"><i class="fa fa-dashboard fa-fw"></i>Přehled příspěvků</a>
+                      <a href="{{ path('index_casopis') }}"><i class="fa fa-dashboard fa-fw"></i>Seznam časopisů</a>
+                  </li>
+                  <li>
+                      <a href="#"><i class="glyphicon glyphicon-list-alt"></i>
+                          Příspěvky <span class="fa arrow"></span>
+                      </a>
+                      <ul class="nav nav-second-level">
+                          <li>
+                              <a href="{{ path('add_prispevek') }}"><i class="fa fa-dashboard fa-fw"></i> Vložit příspěvek</a>
+                          </li>
+                          <li>
+                              <a href="{{ path('find_prispevek') }}"> &nbsp;<i class="glyphicon glyphicon-calendar"></i> Hledat příspěvek</a>
+                          </li>
+                      </ul>
+                      <!-- /.nav-second-level -->
                   </li>
                 </ul>
             </div>

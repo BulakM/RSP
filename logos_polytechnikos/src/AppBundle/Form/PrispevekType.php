@@ -20,8 +20,9 @@ class PrispevekType extends AbstractType
           ->add('nazev', TextType::class, ['label' => 'Zadejte název příspěvku'])
           ->add('text', TextAreaType::class, ['label' => 'Zadejte příspěvek', 'attr' => ['rows' => 5]])
           ->add('casopis', EntityType::class, [
-                'label' => 'Stav časopisu',
+                'label' => 'Výběr časopisu',
                 'class' => Casopis::class,
+                'placeholder' => 'Zvolte časopis',
             ]);
     }
 }

@@ -53,8 +53,12 @@ class PrispevekController extends Controller
   {
       $form = $this->createForm(PrispevekFindType::class);
       $form->handleRequest($request);
+      $prispevek = null;
 
-      $prispevek = $this->getDoctrine()->getRepository(Prispevek::class)->findOneBy(['nazev' => $form->get('nazev')->getData()]);
+      if($form->isSubmitted() && $form->isValid())
+      {
+        $prispevek = $this->getDoctrine()->getRepository(Prispevek::class)->findOneBy(['hash' => $form->getData()['hash']]);
+      }
 
       return $this->render(
             'frontend/prispevek/find.html.twig',

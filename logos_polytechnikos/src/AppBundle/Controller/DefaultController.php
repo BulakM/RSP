@@ -23,14 +23,10 @@ class DefaultController extends Controller
         // last username entered by the user
         $lastUsername = $authUtils->getLastUsername();
 
-//        return $this->render('layout/main.html.twig', array(
-//            'last_username' => $lastUsername,
-//            'error'         => $error,
-//        ));
-          return $this->render('frontend/casopis/index.html.twig', array(
-              'last_username' => $lastUsername,
-              'error'         => $error,
-          ));
+        return $this->render('layout/main.html.twig', array(
+          'last_username' => $lastUsername,
+           'error'         => $error,
+       ));
       }
 
       public function loginCheckAction()

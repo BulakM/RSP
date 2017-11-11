@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 use AppBundle\Form\CasopisType;
+use AppBundle\Form\CasopisFilterType;
 use AppBundle\Entity\Casopis;
 use AppBundle\Entity\Stav;
 
@@ -16,14 +17,23 @@ use AppBundle\Entity\Stav;
 class CasopisController extends Controller
 {
   /**
-    * @Route("/", name="index_casopis_backend")
+    * @Route("/{stav}", name="index_casopis_backend")
     */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request, Stav $stav)
     {
-      $casopisy = $this->getDoctrine()->getRepository(Casopis::class)->findAll();
+      $filter_form = $this->createForm(CasopisFilterType::Class);
+      $filter_form->handleRequest($request);
+
+      $casopisy = $this->getDoctrine()->getRepository(Casopis::class)
+          ->setPaginatorAndQueryUpdater(
+              $this->get('knp_paginator'),
+              $this->get('lexik_form_filter.query_builder_updater')
+          )
+          ->findAllWithPaginator(30, $request->query->getInt('page', 1), $filter_form, false, $stav->getId(), $this->getUser());
 
       return $this->render('backend/casopis/index.html.twig', array(
-          'pagination' => $casopisy,
+        'pagination' => $casopisy,
+        'filter_form' => $filter_form->createView()
       ));
     }
 

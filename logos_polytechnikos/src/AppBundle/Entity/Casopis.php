@@ -5,9 +5,10 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="CasopisRepository")
  */
 class Casopis
 {
@@ -19,35 +20,59 @@ class Casopis
     private $id;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="string")
      */
     private $rok;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      */
     private $cislo;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $rocnik;
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Prispevek", mappedBy="casopis")
      */
     private $prispevky;
 
-	
 	/**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="casopis")
-	 * @ORM\JoinColumn(name="autor", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+	   * @ORM\JoinColumn(name="autor", referencedColumnName="id")
      */
     private $autor;
-	
+
 	 /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Stav", inversedBy="prispevky")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Stav")
      * @ORM\JoinColumn(name="stav", referencedColumnName="id")
      */
     private $stav;
-	
-	
-	
+
+    /**
+     * @ORM\Column(type="string")
+     *
+     * @Assert\NotBlank(message="Nahrajte prosím soubor jako PDF")
+     * @Assert\File(mimeTypes={"application/pdf"})
+     */
+    private $casopis;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Tema")
+     * @ORM\JoinTable(name="casopis_tema",
+     *      joinColumns={@ORM\JoinColumn(name="casopis", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="tema", referencedColumnName="id")}
+     *      )
+     */
+    private $temata;
+
+    public function __toString()
+    {
+        return $this->rok.'/Ročník '.$this->rocnik.'/Číslo '.$this->cislo;
+    }
+
 	/**
      * Get id
      *
@@ -61,7 +86,7 @@ class Casopis
 	/**
      * Get rok
      *
-     * @return date
+     * @return string
      */
     public function getRok()
     {
@@ -83,7 +108,7 @@ class Casopis
 	/**
      * Get cislo
      *
-     * @return integer
+     * @return string
      */
     public function getCislo()
     {
@@ -93,7 +118,7 @@ class Casopis
 	/**
      * Set cislo
      *
-     * @return integer
+     * @return string
      */
     public function setCislo($cislo)
     {
@@ -101,6 +126,28 @@ class Casopis
 
 		    return $this;
     }
+
+    /**
+       * Get rocnik
+       *
+       * @return string
+       */
+      public function getRocnik()
+      {
+          return $this->rocnik;
+      }
+
+    /**
+       * Set rocnik
+       *
+       * @return string
+       */
+      public function setRocnik($rocnik)
+      {
+          $this->rocnik = $rocnik;
+
+          return $this;
+      }
 
 	/**
      * Get stav
@@ -111,7 +158,7 @@ class Casopis
     {
         return $this->stav;
     }
-	
+
 	/**
      * Set stav
      * @param \AppBundle\Entity\Stav $stav
@@ -122,7 +169,7 @@ class Casopis
         $this->stav = $stav;
         return $this;
     }
-	
+
 	/**
      * Get autor
      *
@@ -132,7 +179,7 @@ class Casopis
     {
         return $this->autor;
     }
-	
+
 	/**
      * Set autor
      * @param \AppBundle\Entity\User $autor
@@ -143,7 +190,7 @@ class Casopis
         $this->autor = $autor;
         return $this;
     }
-	
+
     /**
      * Add prispevky
      *
@@ -176,5 +223,61 @@ class Casopis
     public function getPrispevky()
     {
         return $this->prispevky;
+    }
+
+    /**
+     * Get casopis
+     *
+     * @return string
+     */
+    public function getCasopis()
+    {
+        return $this->casopis;
+    }
+
+    /**
+     * Set casopis
+     *
+     * @return string
+     */
+    public function setCasopis($casopis)
+    {
+        $this->casopis = $casopis;
+
+        return $this;
+    }
+
+    /**
+     * Add temata
+     *
+     * @param \RedakceBundle\Entity\Tema $temata
+     *
+     * @return Casopis
+     */
+    public function addTema(\AppBundle\Entity\Tema $tema)
+    {
+        $this->temata[] = $tema;
+
+        return $this;
+    }
+
+    /**
+     * Remove temata
+     *
+     * @param \AppBundle\Entity\Tema $temata
+     */
+    public function removeTema(\AppBundle\Entity\Tema $tema)
+    {
+        $this->temata->removeElement($tema);
+    }
+
+    /**
+     * Get temata
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTemata()
+    {
+        return $this->temata;
     }
 }
