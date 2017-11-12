@@ -10,35 +10,31 @@
 {% block body %}
     <div class="row">
         <div class="panel-heading">
-          {#
           <section id="filtr"
-                   class="{% if filter_form.vars.value is not empty %}filtered{% endif %} hidden-print open">
-              <h1 data-toggle="tooltip" data-placement="top" title="Pro podrobnější vyhledávání a filtrování příspevků klikněte.">
+                   class="{% if filter_form.vars.value is not empty %}filtered{% endif %} hidden-print">
+              <h1 data-toggle="tooltip" data-placement="top" title="Pro podrobnější vyhledávání a filtrování uživatelů klikněte.">
                   <i class="glyphicon glyphicon-search"></i>
-                  Filtr časopisů
+                  Filtr uživatelů
                   <i class="glyphicon glyphicon-chevron-down pull-right filtr-opener"></i>
               </h1>
-              <div class="form-group">
                 {{ form_start(filter_form) }}
                 {{ form_widget(filter_form) }}
+                <br>
                 <input type="submit" class="btn btn-primary" value="Filtrovat">
                 {% if filter_form.vars.value is not empty %}
-                    <a href="{{ path("index_casopis") }}" class="btn btn-danger">Zrušit filtry</a>
+                    <a href="{{ path("index_uzivatel_uzivatel") }}" class="btn btn-danger">Zrušit filtry</a>
                 {% endif %}
                 {{ form_end(filter_form) }}
-              </div>
               {% if filter_form.vars.value is not empty %}
                   <div class="filter-footer">
-                      <a href="{{ path("index_casopis") }}" class="btn btn-danger btn-xs">
+                      <a href="{{ path("index_uzivatel_uzivatel") }}" class="btn btn-danger btn-xs">
                           <i class="glyphicon glyphicon-remove"></i>
                           Zrušit filtr
                       </a>
                   </div>
               {% endif %}
           </section>
-          #}
         </div>
-        <br><br><br>
         <div class="panel-body">
             <table class="table">
                 <thead>
@@ -54,13 +50,20 @@
                 <tr>
                     <td>{{ uzivatel.username }}</td>
                     <td>{{ uzivatel.jmeno}}</td>
-                    <td>{{ uzivatel.prijmeno }}</td>
-                    <td>{% for role in uzivatel.role %}{{ role }}{% if not loop.last %}, {% endif %}{% endfor %}</td>
-                    <td>
-                        <button type="button" class="btn btn-primary">Upravit</button>
-                        <button type="button" class="btn btn-danger">Smazat</button>
+                    <td>{{ uzivatel.prijmeni }}</td>
+                    <td>{% for role in uzivatel.roles %}{{ role }}{% if not loop.last %}, {% endif %}{% endfor %}</td>
+                    <td class="text-right">
+                      <a href="{{ path('edit_uzivatel', {'uzivatel' : uzivatel.id}) }}"
+                         class="btn btn-primary">
+                          <span class="glyphicon glyphicon-pencil"></span>
+                      </a>
+                      <a href="#"
+                         class="btn btn-danger">
+                          <span class="glyphicon glyphicon-remove"></span>
+                      </a>
                     </td>
                 </tr>
+                {% endfor %}
                 </tbody>
             </table>
         </div>
@@ -68,6 +71,22 @@
 {% endblock %}
 {% block javascripts %}
     <script>
+      $(function () {
+        $('#filtr h1').click(function (e) {
+            var filtr = $(this).closest('#filtr');
+            var sipka = $('.filtr-opener');
+            if (filtr.hasClass('open'))
+            {
+                filtr.removeClass('open');
+                sipka.removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+            }
+            else
+            {
+                filtr.addClass('open');
+                sipka.removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+            }
 
+        })
+      })
     </script>
 {% endblock %}

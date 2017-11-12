@@ -34,8 +34,36 @@ class PrispevekController extends Controller
 
       return $this->render('backend/prispevek/index.html.twig', array(
         'pagination' => $prispevky,
-        'filter_form' => $filter_form->createView()
+        'filter_form' => $filter_form->createView(),
+        'stav' => $stav
       ));
+    }
+
+    /**
+     * @Route("/edit/{prispevek}", name="edit_prispevek")
+     */
+    public function editPrispevekAction(Request $request, Prispevek $prispevek)
+    {
+        $form = $this->createForm(PrispevekType::class, $prispevek);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($prispevek);
+            $em->flush();
+
+            $this->addFlash('notice', 'Příspěvek byl úspéšně odeslán.' );
+
+            return $this->render('frontend/casopis/index.html.twig');
+        }
+
+        return $this->render(
+              'frontend/prispevek/edit.html.twig',
+              [
+                  'form' => $form->createView(),
+              ]
+        );
     }
 
   /**
@@ -83,35 +111,5 @@ class PrispevekController extends Controller
       $em->flush();
 
       return $this->redirect($_SERVER['HTTP_REFERER']);
-  }
-
-/**
-  * @Route("/add/recenze/{prispevek}", name="add_recenze_to_casopis")
-  */
-  public function addRecenziToPrispevekAction(Request $request, Prispevek $prispevek)
-  {
-    $recenze = new Recenze($this->getUser());
-
-    $form = $this->createForm(RecenzeType::class, $recenze);
-    $form->handleRequest($request);
-
-    if($form->isSubmitted() && $form->isValid())
-    {
-      $em = $this->getDoctrine()->getManager();
-      $em->persist($form);
-      $em->flush();
-
-      $this->addFlash('notice', 'Recenze byla úspěšně odeslána' );
-
-      return $this->redirectToRoute('index_prispevek_backend');
-    }
-
-    return $this->render(
-          'backend/prispevek/addRecenze.html.twig',
-          [
-              'form' => $form->createView(),
-              'prispevek' => $prispevek,
-          ]
-    );
   }
 }

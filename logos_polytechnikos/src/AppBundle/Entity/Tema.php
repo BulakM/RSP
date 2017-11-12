@@ -24,11 +24,16 @@ class Tema
      */
     private $nazev;
 
+  /**
+   * @ORM\Column(type="boolean")
+   */
+    private $aktivni;
+
     public function __toString()
     {
         return $this->nazev;
     }
-    
+
 	/**
      * Get id
      *
@@ -58,5 +63,28 @@ class Tema
     {
         $this->nazev = $nazev;
 		return $this;
+    }
+
+    /**
+     * Set aktivni
+     *
+     * @param boolean $aktivni
+     * @return Tema
+     */
+    public function setAktivni($aktivni)
+    {
+        $this->aktivni = $aktivni;
+
+        return $this;
+    }
+
+    /**
+     * Get aktivni
+     *
+     * @return boolean
+     */
+    public function getAktivni()
+    {
+        return $this->aktivni;
     }
 }

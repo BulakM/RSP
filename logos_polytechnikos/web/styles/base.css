@@ -1,5 +1,5 @@
-.margin-top-5px {
-  margin-top: 5px;
+.margin-top-16px {
+  margin-top: 16px;
 }
 
 .navbar {
@@ -42,4 +42,23 @@
 }
 #filtr .filter-footer{
   margin-bottom:10px
+}
+.navbar-header .navbar-brand {
+    float: left;
+    height: 50px;
+    padding: 15px 26px;
+    font-size: 18px;
+    line-height: 20px;
+}
+.navbar .dropdown-toggle {
+  margin-top: 9px;
+}
+#wrapper .navbar {
+  min-height: 68px;
+}
+#casopis_uzaverka {
+  display: flex;
+}
+#casopis_uzaverka .select2-container--bootstrap {
+  display: inline-block;
 }

@@ -35,6 +35,16 @@ class Casopis
     private $rocnik;
 
     /**
+     * @ORM\Column(type="datetime")
+     */
+    private $uzaverka;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $datumVytvoreni;
+
+    /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Prispevek", mappedBy="casopis")
      */
     private $prispevky;
@@ -67,6 +77,14 @@ class Casopis
      *      )
      */
     private $temata;
+
+    public function __construct($autor, $stav)
+    {
+        $this->autor = $autor;
+        $this->datumVytvoreni = new \DateTime('now');
+        $this->stav = $stav;
+        $this->temata = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     public function __toString()
     {
@@ -147,6 +165,54 @@ class Casopis
           $this->rocnik = $rocnik;
 
           return $this;
+      }
+
+      /**
+       * Set uzaverka
+       *
+       * @param \DateTime $uzaverka
+       *
+       * @return Casopis
+       */
+      public function setUzaverka($uzaverka)
+      {
+          $this->uzaverka = $uzaverka;
+
+          return $this;
+      }
+
+      /**
+       * Get uzaverka
+       *
+       * @return \DateTime
+       */
+      public function getUzaverka()
+      {
+          return $this->uzaverka;
+      }
+
+      /**
+       * Set datumVytvoreni
+       *
+       * @param \DateTime $datumVytvoreni
+       *
+       * @return Casopis
+       */
+      public function setDatumVytvoreni($datumVytvoreni)
+      {
+          $this->datumVytvoreni = $datumVytvoreni;
+
+          return $this;
+      }
+
+      /**
+       * Get datumVytvoreni
+       *
+       * @return \DateTime
+       */
+      public function getDatumVytvoreni()
+      {
+          return $this->datumVytvoreni;
       }
 
 	/**
@@ -250,11 +316,11 @@ class Casopis
     /**
      * Add temata
      *
-     * @param \RedakceBundle\Entity\Tema $temata
+     * @param \AppBundle\Entity\Tema $temata
      *
      * @return Casopis
      */
-    public function addTema(\AppBundle\Entity\Tema $tema)
+    public function addTemata(\AppBundle\Entity\Tema $tema)
     {
         $this->temata[] = $tema;
 
@@ -266,7 +332,7 @@ class Casopis
      *
      * @param \AppBundle\Entity\Tema $temata
      */
-    public function removeTema(\AppBundle\Entity\Tema $tema)
+    public function removeTemata(\AppBundle\Entity\Tema $tema)
     {
         $this->temata->removeElement($tema);
     }

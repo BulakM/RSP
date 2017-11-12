@@ -10,35 +10,31 @@
 {% block body %}
   <div class="row">
     <div class="panel-heading">
-      {#
       <section id="filtr"
-               class="{% if filter_form.vars.value is not empty %}filtered{% endif %} hidden-print open">
+               class="{% if filter_form.vars.value is not empty %}filtered{% endif %} hidden-print">
           <h1 data-toggle="tooltip" data-placement="top" title="Pro podrobnější vyhledávání a filtrování příspevků klikněte.">
               <i class="glyphicon glyphicon-search"></i>
-              Filtr časopisů
+              Filtr Příspěvků
               <i class="glyphicon glyphicon-chevron-down pull-right filtr-opener"></i>
           </h1>
-          <div class="form-group">
             {{ form_start(filter_form) }}
             {{ form_widget(filter_form) }}
+            <br>
             <input type="submit" class="btn btn-primary" value="Filtrovat">
             {% if filter_form.vars.value is not empty %}
-                <a href="{{ path("index_casopis") }}" class="btn btn-danger">Zrušit filtry</a>
+                <a href="{{ path("index_prispevek_backend", {'stav' : stav}) }}" class="btn btn-danger">Zrušit filtry</a>
             {% endif %}
             {{ form_end(filter_form) }}
-          </div>
           {% if filter_form.vars.value is not empty %}
               <div class="filter-footer">
-                  <a href="{{ path("index_casopis") }}" class="btn btn-danger btn-xs">
+                  <a href="{{ path("index_prispevek_backend", {'stav' : stav}) }}" class="btn btn-danger btn-xs">
                       <i class="glyphicon glyphicon-remove"></i>
                       Zrušit filtr
                   </a>
               </div>
           {% endif %}
       </section>
-      #}
     </div>
-    <br><br><br>
     <div class="panel-body">
       <table class="table">
         <thead>
@@ -53,11 +49,17 @@
         <tbody>
           {% for prispevek in pagination %}
           <tr>
-            <td>{{ prispevek.datumVytvoreni|date('Y.m.d H.i.s') }}</td>
-            <td>{{ prispevek.nazev }}</td>
-            <td>{{ prispevek.text|truncate(250, true) }}</td>
-            <td>{{ prispevek.tema }}</td>
-            <td>
+            <td class="col-md-1 col-sm-1 col-xs-1">{{ prispevek.datumVytvoreni|date('Y.m.d H.i.s') }}</td>
+            <td class="col-md-1 col-sm-1 col-xs-1">{{ prispevek.nazev }}</td>
+            <td class="col-md-6 col-sm-6 col-xs-6">{{ prispevek.text|truncate(250, true) }}</td>
+            <td class="col-md-1 col-sm-1 col-xs-1">{{ prispevek.tema }}</td>
+            <td class="col-md-3 col-sm-3 col-xs-3 text-right">
+              {% if stav.id == 1 %}
+                <a href="{{ path('add_recenzi', {'prispevek' : prispevek.id}) }}"
+                   class="btn btn-success">
+                    Napsat recenzi
+                </a>
+              {% endif %}
               <a href="#"
                  class="btn btn-info">
                   <span class="glyphicon glyphicon-search"></span>
@@ -85,6 +87,22 @@
 {% endblock %}
 {% block javascripts %}
 <script>
+  $(function () {
+    $('#filtr h1').click(function (e) {
+        var filtr = $(this).closest('#filtr');
+        var sipka = $('.filtr-opener');
+        if (filtr.hasClass('open'))
+        {
+            filtr.removeClass('open');
+            sipka.removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+        }
+        else
+        {
+            filtr.addClass('open');
+            sipka.removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+        }
 
+    })
+  })
 </script>
 {% endblock %}

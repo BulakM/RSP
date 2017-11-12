@@ -12,12 +12,21 @@
     <link href="{{ asset('/bower_components/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/bower_components/sb-admin-2/css/plugins/metisMenu/metisMenu.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/bower_components/sb-admin-2/css/sb-admin-2.css') }}" rel="stylesheet">
+    <link href="{{ asset('/bower_components/sb-admin-2/css/plugins/dataTables.bootstrap.css') }}" rel="stylesheet">
     <link href="{{ asset('/bower_components/sb-admin-2/font-awesome-4.1.0/css/font-awesome.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/styles/base.css') }}" rel="stylesheet">
+    <link href="https://nightly.datatables.net/css/jquery.dataTables.css" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('/bower_components/select2/dist/css/select2.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('/bower_components/select2-bootstrap-theme/dist/select2-bootstrap.css') }}" rel="stylesheet" />
+    <link href="{{ asset('/bower_components/sb-admin-2/css/plugins/metisMenu/metisMenu.min.css') }}" rel="stylesheet" >
 
     <script src="{{ asset('/bower_components/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('/bower_components/sb-admin-2/js/sb-admin-2.js') }}"></script>
+    <script src="{{ asset('/bower_components/sb-admin-2/js/plugins/dataTables/jquery.dataTables.js') }}"></script>
+    <script src="{{ asset('/bower_components/select2/dist/js/select2.min.js') }}"></script>
+    <script src="{{ asset('/bower_components/sb-admin-2/js/plugins/metisMenu/metisMenu.min.js') }}"></script>
+    <script src="{{ asset('/js/base.js') }}"></script>
 </head>
 <body>
 <div id="wrapper">
@@ -25,7 +34,7 @@
     <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
             <a class="navbar-brand" href="#">
-                <img src="/design/logos_polytechnikos.png" alt="logos_polytechnikos" />
+                <img src="/logos_polytechnikos.png" alt="logos_polytechnikos" />
             </a>
         </div>
         <!-- /.navbar-header -->
@@ -38,6 +47,8 @@
                     <li class="text-center"><b>{{ app.user.jmeno }}</b>
                     </li>
                     <li class="divider"></li>
+                    <li><a href="{{ path('homepage') }}"><i class="fa fa-sign-out fa-fw"></i> Úvodní stránka</a></li>
+                    <li><a href="{{ path('change_heslo') }}"><i class="fa fa-sign-out fa-fw"></i> Změna hesla</a></li>
                     <li><a href="{{ path('logout') }}"><i class="fa fa-sign-out fa-fw"></i> Odhlásit se</a>
                     </li>
                 </ul>
@@ -60,7 +71,6 @@
                       <!-- /input-group -->
                   </li>
                   <li>
-<<<<<<< HEAD
                       <a href="#"><i class="glyphicon glyphicon-list-alt"></i>
                          Příspěvky <span class="fa arrow"></span>
                       </a>
@@ -89,6 +99,9 @@
                       </a>
                       <ul class="nav nav-second-level">
                           <li>
+                              <a href="{{ path('add_casopis') }}"><i class="fa fa-dashboard fa-fw"></i> Přidat časopis</a>
+                          </li>
+                          <li>
                               <a href="{{ path('index_casopis_backend', {'stav' : 3}) }}"><i class="fa fa-dashboard fa-fw"></i> Publikované časopisy</a>
                           </li>
                           <li>
@@ -109,20 +122,13 @@
                       </a>
                       <ul class="nav nav-second-level">
                           <li>
-                              <a href="{{ path('index_uzivatel_uzivatel') }}"><i class="fa fa-dashboard fa-fw"></i> Přehled uživatelů</a>
-                          </li>
-                          <li>
                               <a href="{{ path('add_uzivatel') }}"> &nbsp;<i class="glyphicon glyphicon-calendar"></i> Přidat uživatele</a>
                           </li>
                           <li>
-                              <a href="{{ path('change_heslo', {'user' : app.user}) }}"> &nbsp;<i class="glyphicon glyphicon-calendar"></i> Změna hesla</a>
+                              <a href="{{ path('index_uzivatel_uzivatel') }}"><i class="fa fa-dashboard fa-fw"></i> Přehled uživatelů</a>
                           </li>
                       </ul>
                       <!-- /.nav-second-level -->
-=======
-                      <a href="#"><i class="fa fa-dashboard fa-fw"></i>Přehled příspěvků</a>
-                      {#Přidat linky pro backend#}
->>>>>>> 7828e6b2601e087bc017aaa8fe198dac440cb929
                   </li>
                 </ul>
             </div>

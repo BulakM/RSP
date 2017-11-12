@@ -18,42 +18,45 @@ class Recenze
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-	
+
 	/**
      * @ORM\Column(type="integer")
      */
     private $odbornost;
-	
+
 	/**
      * @ORM\Column(type="integer")
      */
     private $zajimavost;
-	
+
 	/**
      * @ORM\Column(type="integer")
      */
     private $aktualnost;
-	
+
 	/**
      * @ORM\Column(type="string")
      */
     private $text;
-	
-	
-	/**
+
+  	/**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="recenze")
-	 * @ORM\JoinColumn(name="autor", referencedColumnName="id")
+  	  * @ORM\JoinColumn(name="autor", referencedColumnName="id")
      */
     private $autor;
-	
-	/**
+
+  	/**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Prispevek", inversedBy="recenze")
-	 * @ORM\JoinColumn(name="prispevek", referencedColumnName="id")
+  	  * @ORM\JoinColumn(name="prispevek", referencedColumnName="id")
      */
     private $prispevek;
-	
-	
-	
+
+    public function __construct($autor, $prispevek)
+    {
+        $this->autor = $autor;
+        $this->prispevek = $prispevek;
+    }
+
 	/**
      * Get id
      *
@@ -63,7 +66,7 @@ class Recenze
     {
         return $this->id;
     }
-	
+
 	/**
      * Get odbornost
      *
@@ -84,7 +87,7 @@ class Recenze
         $this->odbornost = $odbornost;
 		return $this;
     }
-	
+
 	/**
      * Get zajimavost
      *
@@ -105,7 +108,7 @@ class Recenze
         $this->zajimavost = $zajimavost;
 		return $this;
     }
-	
+
 	/**
      * Get aktualnost
      *
@@ -126,7 +129,7 @@ class Recenze
         $this->aktualnost = $aktualnost;
 		return $this;
     }
-	
+
 	/**
      * Get text
      *
@@ -136,7 +139,7 @@ class Recenze
     {
         return $this->text;
     }
-	
+
 	/**
      * Set text
      * @param string $text
@@ -147,8 +150,8 @@ class Recenze
         $this->text = $text;
 		return $this;
     }
-	
-	
+
+
 	/**
      * Get autor
      *
@@ -158,7 +161,7 @@ class Recenze
     {
         return $this->autor;
     }
-	
+
 	/**
      * Set autor
      * @param \AppBundle\Entity\User $autor
@@ -169,7 +172,7 @@ class Recenze
         $this->autor = $autor;
         return $this;
     }
-	
+
 	/**
      * Get prispevek
      *
@@ -179,7 +182,7 @@ class Recenze
     {
         return $this->prispevek;
     }
-	
+
 	/**
      * Set prispevek
      * @param AppBundle\Entity\Prispevek $prispevek
@@ -191,4 +194,3 @@ class Recenze
         return $this;
     }
 }
-

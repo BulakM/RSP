@@ -20,13 +20,20 @@
                 {{ form_row(form.cislo) }}
               </div>
               <div class="col-md-6 col-sm-6 col-xs-12">
-                {{ form_row(form.stav) }}
+                {{ form_row(form.rocnik) }}
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                  {{ form_row(form.uzaverka) }}
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                {{ form_row(form.temata) }}
               </div>
               <div class="col-md-6 col-sm-6 col-xs-12">
                 {{ form_row(form.casopis) }}
               </div>
               <div class="col-md-12 col-sm-12 col-xs-12">
-                  <button type="submit" class="btn btn-default pull-right" style="margin-right: inherit">Pošli příspěvek</button>
+                  <br>
+                  <button type="submit" class="btn btn-default pull-right" style="margin-right: inherit">Ulož časopis</button>
               </div>
               {{ form_end(form) }}
             </div>

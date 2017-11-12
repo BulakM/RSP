@@ -10,9 +10,8 @@
 {% block body %}
     <div class="row">
         <div class="panel-heading">
-          {#
           <section id="filtr"
-                   class="{% if filter_form.vars.value is not empty %}filtered{% endif %} hidden-print open">
+                   class="{% if filter_form.vars.value is not empty %}filtered{% endif %} hidden-print">
               <h1 data-toggle="tooltip" data-placement="top" title="Pro podrobnější vyhledávání a filtrování příspevků klikněte.">
                   <i class="glyphicon glyphicon-search"></i>
                   Filtr časopisů
@@ -21,6 +20,7 @@
               <div class="form-group">
                 {{ form_start(filter_form) }}
                 {{ form_widget(filter_form) }}
+                <br>
                 <input type="submit" class="btn btn-primary" value="Filtrovat">
                 {% if filter_form.vars.value is not empty %}
                     <a href="{{ path("index_casopis") }}" class="btn btn-danger">Zrušit filtry</a>
@@ -36,9 +36,8 @@
                   </div>
               {% endif %}
           </section>
-          #}
+
         </div>
-        <br><br><br>
         <div class="panel-body">
             <table class="table">
                 <thead>
@@ -60,22 +59,31 @@
                       <td>{{ casopis.autor.username }}</td>
                       <td>{% for tema in casopis.temata %}{{ tema }}{% if not loop.last %}, {% endif %}{% endfor %}</td>
                       <td class="text-right">
+                        {% if stav.id == 0 %}
+                          <a href="{{ path('zmenit_stav_casopis', {'casopis' : casopis.id, 'stav' : 2}) }}"
+                             class="btn btn-warning">
+                              Schválit
+                          </a>
+                        {% elseif stav.id == 2 %}
+                          <a href="{{ path('zmenit_stav_casopis', {'casopis' : casopis.id, 'stav' : 3}) }}"
+                             class="btn btn-success">
+                              Publikovat
+                          </a>
+                        {% endif %}
                         <a href="{{ asset('uploads/casopisy/' ~ casopis.casopis) }}"
                            class="btn btn-default">
                             <span class="glyphicon glyphicon-download-alt"></span>
                         </a>
-                        <a href="#"
-                           class="btn btn-info">
-                            <span class="glyphicon glyphicon-search"></span>
-                        </a>
-                        <a href="#"
+                        <a href="{{ path('edit_casopis', {'casopis' : casopis.id}) }}"
                            class="btn btn-primary">
                             <span class="glyphicon glyphicon-pencil"></span>
                         </a>
-                        <a href="#"
-                           class="btn btn-danger">
-                            <span class="glyphicon glyphicon-remove"></span>
-                        </a>
+                        {% if stav.id != -1 %}
+                          <a href="{{ path('zmenit_stav_casopis', {'casopis' : casopis.id, 'stav' : -1}) }}"
+                             class="btn btn-danger">
+                              <span class="glyphicon glyphicon-remove"></span>
+                          </a>
+                        {% endif %}
                       </td>
                   </tr>
                 {% endfor %}
@@ -90,6 +98,22 @@
 {% endblock %}
 {% block javascripts %}
     <script>
+      $(function () {
+        $('#filtr h1').click(function (e) {
+            var filtr = $(this).closest('#filtr');
+            var sipka = $('.filtr-opener');
+            if (filtr.hasClass('open'))
+            {
+                filtr.removeClass('open');
+                sipka.removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+            }
+            else
+            {
+                filtr.addClass('open');
+                sipka.removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+            }
 
+        })
+      })
     </script>
 {% endblock %}

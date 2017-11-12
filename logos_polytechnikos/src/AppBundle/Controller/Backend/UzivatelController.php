@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 use AppBundle\Form\UzivatelType;
+use AppBundle\Form\UzivatelFilterType;
 
 use AppBundle\Entity\User;
 
@@ -23,12 +24,12 @@ class UzivatelController extends Controller
       $filter_form = $this->createForm(UzivatelFilterType::Class);
       $filter_form->handleRequest($request);
 
-      $uzivatele = $this->getDoctrine()->getRepository(Uzivatel::class)
+      $uzivatele = $this->getDoctrine()->getRepository(User::class)
           ->setPaginatorAndQueryUpdater(
               $this->get('knp_paginator'),
               $this->get('lexik_form_filter.query_builder_updater')
           )
-          ->findAllWithPaginator(30, $request->query->getInt('page', 1), $filterForm);
+          ->findAllWithPaginator(30, $request->query->getInt('page', 1), $filter_form);
 
       return $this->render('backend/uzivatel/index.html.twig', array(
         'pagination' => $uzivatele,
@@ -39,7 +40,7 @@ class UzivatelController extends Controller
   /**
     * @Route("/add", name="add_uzivatel")
     */
-    public function addCasopisAction(Request $request)
+    public function addUzivatelAction(Request $request)
     {
       $uzivatel = new User();
 
@@ -65,10 +66,37 @@ class UzivatelController extends Controller
       );
     }
 
+    /**
+      * @Route("/edit/{uzivatel}", name="edit_uzivatel")
+      */
+      public function editUzivatelAction(Request $request, User $uzivatel)
+      {
+        $form = $this->createForm(UzivatelType::class, $uzivatel);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+          $em = $this->getDoctrine()->getManager();
+          $em->persist($uzivatel);
+          $em->flush();
+
+          $this->addFlash('notice', 'Uživatel byl úspéšně uložen.' );
+
+          return $this->redirectToRoute('index_uzivatel_backend');
+        }
+
+        return $this->render(
+              'backend/uzivatel/add.html.twig',
+              [
+                  'form' => $form->createView(),
+              ]
+        );
+      }
+
   /**
-    * @Route("/heslo/{user}", name="change_heslo")
+    * @Route("/heslo", name="change_heslo")
     */
-    public function hesloAction(Request $request, User $user)
+    public function hesloAction(Request $request)
     {
       return $this->render(
             'backend/uzivatel/heslo.html.twig',
