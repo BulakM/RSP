@@ -103,6 +103,7 @@ class CasopisController extends Controller
               'backend/casopis/edit.html.twig',
               [
                   'form' => $form->createView(),
+                  'casopis' => $casopis
               ]
         );
       }

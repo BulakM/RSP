@@ -27,7 +27,7 @@ class CasopisType extends AbstractType
             'data' => Date('Y')))
           ->add('cislo', TextType::class, array('label' => 'Číslo časopisu'))
           ->add('rocnik', TextType::class, array('label' => 'Ročník časopisu'))
-          ->add('casopis', FileType::class, array('label' => 'Časopis v pdf'))
+          ->add('casopis', FileType::class, array('label' => 'Časopis v pdf', 'data_class' => null))
           ->add('temata', EntityType::class, array(
               'class' => Tema::class,
               'query_builder' => function (EntityRepository $er) {

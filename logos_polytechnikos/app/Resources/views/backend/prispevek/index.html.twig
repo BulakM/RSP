@@ -54,21 +54,26 @@
             <td class="col-md-6 col-sm-6 col-xs-6">{{ prispevek.text|truncate(250, true) }}</td>
             <td class="col-md-1 col-sm-1 col-xs-1">{{ prispevek.tema }}</td>
             <td class="col-md-3 col-sm-3 col-xs-3 text-right">
-              {% if stav.id == 1 %}
+              {% if stav.id == 0 %}
+                <a href="{{ path('zmenit_stav_prispevek', {'prispevek' : prispevek.id, 'stav' : 1}) }}"
+                   class="btn btn-success">
+                    Schválit
+                </a>
+              {% elseif stav.id == 1 %}
                 <a href="{{ path('add_recenzi', {'prispevek' : prispevek.id}) }}"
                    class="btn btn-success">
                     Napsat recenzi
                 </a>
               {% endif %}
-              <a href="#"
+              <a href="{{ path('detail_prispevek_backend', {'prispevek' : prispevek.id}) }}"
                  class="btn btn-info">
                   <span class="glyphicon glyphicon-search"></span>
               </a>
-              <a href="#"
+              <a href="{{ path('edit_prispevek', {'prispevek' : prispevek.id}) }}"
                  class="btn btn-primary">
                   <span class="glyphicon glyphicon-pencil"></span>
               </a>
-              <a href="#"
+              <a href="{{ path('zmenit_stav_prispevek', {'prispevek' : prispevek.id, 'stav' : -1}) }}"
                  class="btn btn-danger">
                   <span class="glyphicon glyphicon-remove"></span>
               </a>

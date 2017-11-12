@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 use AppBundle\Form\RecenzeType;
 use AppBundle\Form\PrispevekFilterType;
+use AppBundle\Form\PrispevekEditType;
 
 use AppBundle\Entity\Prispevek;
 use AppBundle\Entity\Stav;
@@ -44,7 +45,7 @@ class PrispevekController extends Controller
      */
     public function editPrispevekAction(Request $request, Prispevek $prispevek)
     {
-        $form = $this->createForm(PrispevekType::class, $prispevek);
+        $form = $this->createForm(PrispevekEditType::class, $prispevek);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid())
@@ -59,9 +60,10 @@ class PrispevekController extends Controller
         }
 
         return $this->render(
-              'frontend/prispevek/edit.html.twig',
+              'backend/prispevek/edit.html.twig',
               [
                   'form' => $form->createView(),
+                  'prispevek' => $prispevek,
               ]
         );
     }
@@ -71,7 +73,7 @@ class PrispevekController extends Controller
     */
     public function detailAction(Request $request, Prispevek $prispevek)
     {
-      return $this->render('backend/prispevek/index.html.twig', array(
+      return $this->render('backend/prispevek/detail.html.twig', array(
           'prispevek' => $prispevek,
       ));
     }
@@ -88,9 +90,6 @@ class PrispevekController extends Controller
           break;
         case 0:
           $stav = $em->getReference(Stav::class, 0); // Ke schválení
-          break;
-        case 1:
-          $stav = $em->getReference(Stav::class, 1); // V recenzní řízení
           break;
         case 2:
           $stav = $em->getReference(Stav::class, 2); // Schváleno
