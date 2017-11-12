@@ -37,17 +37,4 @@ class CasopisController extends Controller
         'filter_form' => $filter_form->createView()
       ));
     }
-
-    /**
-      * @Route("/download/{casopis}", name="download_casopis")
-      */
-      public function downloadAction(Request $request, Casopis $casopis)
-      {
-        $file = null; // Stáhnout balík pro správu souborů
-
-        $response = new BinaryFileResponse($file);
-        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
-
-        return $response;
-      }
 }

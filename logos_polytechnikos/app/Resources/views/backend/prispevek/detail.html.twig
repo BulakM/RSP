@@ -1,1 +1,58 @@
-{# detail příspěvku včetně výpis jeho recenzí a tlačítka umožňující jeho editaci (může editovat pouze autor recenze) #}
+{% extends  'layout/mainBackend.html.twig' %}
+
+{% block pagetitle %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Detail příspěvku: {{ prispevek.nazev}}</h1>
+        </div>
+    </div>
+{% endblock %}
+{% block body %}
+  <div class="row">
+    <table class="table">
+        <tr>
+            <th>Název</th>
+            <th>Text</th>
+            <th>Stav</th>
+            <th></th>
+        </tr>
+        <tr>
+            <td>{{ prispevek.nazev }}</td>
+            <td>{{ prispevek.text }}</td>
+            <td>{{ prispevek.stav }}</td>
+            <td></td>
+        </tr>
+    </table>
+  </div>
+  <div class="row">
+  <h3>Recenze</h3>
+    <table class="table">
+        <tr>
+            <th>Odbornost</th>
+            <th>Zajímavost</th>
+            <th>Aktuálnost</th>
+            <th>Text</th>
+            <th></th>
+        </tr>
+        {% for recenze in prispevek.recenze %}
+        <tr class="{% if recenze.odbornost + recenze.zajimavost + recenze.aktualnost > 7 %}success{% else %}danger{% endif %}">
+            <td>{{ recenze.odbornost }}</td>
+            <td>{{ recenze.zajimavost }}</td>
+            <td>{{ recenze.aktualnost }}</td>
+            <td>{{ recenze.text }}</td>
+            <td>
+              {% if recenze.autor == app.user %}
+                <a href="{{ path('edit_recenze', {'recenze' : recenze.id}) }}"
+                   class="btn btn-primary">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+              {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+  </div>
+{% endblock %}
+{% block javascripts %}
+
+{% endblock %}

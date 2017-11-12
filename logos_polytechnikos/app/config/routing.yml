@@ -11,8 +11,10 @@ fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 app:
     resource: '@AppBundle/Controller/Frontend/'
-    type: annotation    
+    type: annotation
 backend:
     resource: '@AppBundle/Controller/Backend/'
     type: annotation
     prefix: /redakce
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

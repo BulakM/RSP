@@ -1,4 +1,4 @@
-{% extends  'layout/main.html.twig' %}
+{% extends 'layout/main.html.twig' %}
 
 {% block pagetitle %}
     <div class="row">
@@ -14,24 +14,45 @@
               {{ form_start(form) }}
               {{ form_errors(form) }}
               <div class="col-md-12 col-sm-12 col-xs-12">
-                {{ form_row(form.nazev) }}
+                {{ form_row(form.prispevatel_email) }}
               </div>
               <div class="col-md-12 col-sm-12 col-xs-12">
-                {{ form_row(form.text) }}
+                {{ form_row(form.prispevek_nazev) }}
+              </div>
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                {{ form_row(form.prispevek_text) }}
               </div>
               <div class="col-md-6 col-sm-6 col-xs-6">
-                {{ form_row(form.casopis) }}
+                {{ form_row(form.prispevek_casopis) }}
               </div>
               <div class="col-md-6 col-sm-6 col-xs-6">
+                {{ form_row(form.prispevek_tema) }}
               </div>
               <br>
               <div class="col-md-12 col-sm-12 col-xs-12">
+                  <br>
                   <button type="submit" class="btn btn-default pull-right" style="margin-right: inherit">Pošli příspěvek</button>
               </div>
+              {{ form_end(form) }}
             </div>
         </div>
     </div>
 {% endblock %}
 {% block javascripts %}
+  <script>
+    $(document).ready(function(){
+      $('#prispevek_prispevek_casopis').on('change', function (){
+        $('#prispevek_prispevek_tema').html('');
 
+        $.post(Routing.generate('get_temata_for_casopis', { casopis: $(this).val() }), function( data ) {
+          console.log(data.options);
+          $.each(data.options, function(i, d) {
+
+              // You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
+              $('#prispevek_prispevek_tema').append('<option value="' + d['id'] + '">' + d['nazev'] + '</option>');
+          });
+        });
+      });
+    });
+  </script>
 {% endblock %}

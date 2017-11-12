@@ -68,6 +68,15 @@ class Prispevek
      */
     private $recenze;
 
+    public function __construct($stav, $casopis, $prispevatel, $tema)
+    {
+        $this->stav = $stav;
+        $this->casopis = $casopis;
+        $this->prispevatel = $prispevatel;
+        $this->tema = $tema;
+        $this->datumVytvoreni = new \DateTime('now');
+    }
+
 	/**
      * Get id
      *

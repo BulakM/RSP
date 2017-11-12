@@ -10,13 +10,11 @@ use Doctrine\ORM\EntityRepository;
 
 use AppBundle\Entity\User;
 
-class UzivatelType extends AbstractType
+class UzivatelEditType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
        $builder
-            ->add('username', TextType::class, ['label' => 'Uživatelské jméno'])
-            ->add('password', TextType::class, ['label' => 'Heslo'])
             ->add('jmeno', TextType::class, ['label' => 'Jméno'])
             ->add('prijmeni', TextType::class, ['label' => 'Príjmení'])
             ->add('roles', ChoiceType::class, [

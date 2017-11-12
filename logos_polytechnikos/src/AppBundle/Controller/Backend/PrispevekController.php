@@ -90,13 +90,13 @@ class PrispevekController extends Controller
           $stav = $em->getReference(Stav::class, 0); // Ke schválení
           break;
         case 1:
-          $stav = $em->getReference(Stav::class, 1); // Schváleno
+          $stav = $em->getReference(Stav::class, 1); // V recenzní řízení
           break;
         case 2:
-          $stav = $em->getReference(Stav::class, 2); // Publikováno
+          $stav = $em->getReference(Stav::class, 2); // Schváleno
           break;
         case 3:
-          $stav = $em->getReference(Stav::class, 3); // V recenzní řízení
+          $stav = $em->getReference(Stav::class, 3); // Publikováno
           break;
         default:
           $this->addFlash('error', 'Zadal jste neexistující stav');
