@@ -15,7 +15,7 @@ class RecenzeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
        $builder
-          ->add('text', TextAreaType::class, ['label' => 'Zadejte recenzi', 'attr' => ['rows' => 5]])
+          ->add('text', TextAreaType::class, ['label' => 'Zadejte recenzi', 'attr' => ['rows' => 5], 'required' => false])
           ->add('odbornost', ChoiceType::class, array(
               'choices'  => range(1,5),
               'choice_label' => function ($choice) {

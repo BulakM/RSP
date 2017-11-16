@@ -34,7 +34,7 @@ class PrispevekFilterType extends AbstractType
                     $qb
                         ->andWhere($qb->expr()->orX(
                             $qb->expr()->like('lower(p.nazev)', 'lower(:value)'),
-                            $qb->expr()->like('lower(o.text)', 'lower(:value)')
+                            $qb->expr()->like('lower(p.text)', 'lower(:value)')
                         ))
                         ->setParameter('value', $value);
                     ;

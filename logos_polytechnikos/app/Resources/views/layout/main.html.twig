@@ -52,27 +52,14 @@
                     </li>
                     <li class="divider"></li>
                     <li><a href="{{ path('backpage') }}"><i class="fa fa-sign-out fa-fw"></i> Redakce</a></li>
+                    <li><a href="{{ path('fos_user_change_password') }}"><i class="fa fa-sign-out fa-fw"></i> Změna hesla</a></li>
                     <li><a href="{{ path('logout') }}"><i class="fa fa-sign-out fa-fw"></i> Odhlásit se</a></li>
                 </ul>
                 <!-- /.dropdown-user -->
             </li>
           {% else %}
             <li>
-              <form action="{{ path('login_check') }}" method="post">
-                  <div class="form-group">
-                    <div class="row margin-top-16px">
-                      <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input type="text" placeholder="uživatelské jméno" id="username" name="_username" required="required" class="form-control" />
-                      </div>
-                      <div class="col-md-3 col-sm-3 col-xs-12">
-                        <input type="password" placeholder="heslo" id="password" required="required" class="form-control" name="_password" />
-                      </div>
-                      <div class="col-md-3 col-sm-3 col-xs-12">
-                        <button type="submit" class="btn btn-primary btn-sm">PŘIHLÁSIT SE</button>
-                      </div>
-                    </div>
-                  </div>
-              </form>
+              <a href="{{ path('fos_user_security_login') }}" class="dropdown-toggle"><i class="fa fa-user fa-fw"></i> Přihlásit se</a>
             </li>
           {% endif %}
         </ul>

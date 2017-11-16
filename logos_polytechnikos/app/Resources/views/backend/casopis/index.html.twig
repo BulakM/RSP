@@ -23,6 +23,7 @@
                 <br>
                 <input type="submit" class="btn btn-primary" value="Filtrovat">
                 {% if filter_form.vars.value is not empty %}
+                    <br><br>
                     <a href="{{ path("index_casopis") }}" class="btn btn-danger">Zrušit filtry</a>
                 {% endif %}
                 {{ form_end(filter_form) }}
@@ -42,10 +43,12 @@
             <table class="table">
                 <thead>
                 <tr>
+                  <th>{{ knp_pagination_sortable(pagination, 'Datum vytvoření', 'c.datumVytvoreni') }}</th>
                   <th>{{ knp_pagination_sortable(pagination, 'Rok', 'c.rok') }}</th>
                   <th>{{ knp_pagination_sortable(pagination, 'Číslo', 'c.cislo') }}</th>
                   <th>{{ knp_pagination_sortable(pagination, 'Ročník', 'c.rocnik') }}</th>
                   <th>{{ knp_pagination_sortable(pagination, 'Autor', 'u.username') }}</th>
+                  <th>{{ knp_pagination_sortable(pagination, 'Uzávěrka', 'c.uzaverka') }}</th>
                   <th>{{ knp_pagination_sortable(pagination, 'Témata', 't.nazev') }}</th>
                   <th></th>
                 </tr>
@@ -53,10 +56,12 @@
                 <tbody>
                 {% for casopis in pagination %}
                   <tr>
+                      <td>{{ casopis.datumVytvoreni|date('Y-m-d H:i:s') }}</td>
                       <td>{{ casopis.rok }}</td>
                       <td>{{ casopis.cislo }}</td>
                       <td>{{ casopis.rocnik }}</td>
                       <td>{{ casopis.autor.username }}</td>
+                      <td>{{ casopis.uzaverka|date('Y-m-d H:i:s') }}</td>
                       <td>{% for tema in casopis.temata %}{{ tema }}{% if not loop.last %}, {% endif %}{% endfor %}</td>
                       <td class="text-right">
                         {% if stav.id == 0 %}
@@ -64,15 +69,21 @@
                              class="btn btn-warning">
                               Schválit
                           </a>
-                        {% elseif stav.id == 2 %}
+                        {% elseif stav.id == 2 and casopis.uzaverka|date('Y-m-d H:i:s') < 'now'|date('Y-m-d H:i:s') and casopis.casopis != null %}
                           <a href="{{ path('zmenit_stav_casopis', {'casopis' : casopis.id, 'stav' : 3}) }}"
                              class="btn btn-success">
                               Publikovat
                           </a>
                         {% endif %}
-                        <a href="{{ asset('uploads/casopisy/' ~ casopis.casopis) }}"
-                           class="btn btn-default">
-                            <span class="glyphicon glyphicon-download-alt"></span>
+                        {% if casopis.casopis != null %}
+                          <a href="{{ asset('uploads/casopisy/' ~ casopis.casopis) }}"
+                             class="btn btn-default" target="_blank">
+                              <span class="glyphicon glyphicon-download-alt"></span>
+                          </a>
+                        {% endif %}
+                        <a href="{{ path('detail_casopis_backend', {'casopis' : casopis.id}) }}"
+                           class="btn btn-info">
+                            <span class="glyphicon glyphicon-search"></span>
                         </a>
                         <a href="{{ path('edit_casopis', {'casopis' : casopis.id}) }}"
                            class="btn btn-primary">

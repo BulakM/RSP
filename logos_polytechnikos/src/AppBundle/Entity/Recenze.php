@@ -8,7 +8,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Table()
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="RecenzeRepository")
  */
 class Recenze
 {
@@ -39,6 +39,11 @@ class Recenze
      */
     private $text;
 
+    /**
+       * @ORM\Column(type="datetime")
+       */
+      private $datumVytvoreni;
+
   	/**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="recenze")
   	  * @ORM\JoinColumn(name="autor", referencedColumnName="id")
@@ -55,6 +60,7 @@ class Recenze
     {
         $this->autor = $autor;
         $this->prispevek = $prispevek;
+        $this->datumVytvoreni = new \DateTime('now');
     }
 
 	/**
@@ -148,7 +154,30 @@ class Recenze
     public function setText($text)
     {
         $this->text = $text;
-		return $this;
+
+		    return $this;
+    }
+
+  /**
+     * Get datumVytvoreni
+     *
+     * @return integer
+     */
+    public function getDatumVytvoreni()
+    {
+        return $this->datumVytvoreni;
+    }
+
+  /**
+     * Set datumVytvoreni
+     * @param datetime $datumVytvoreni
+     * @return Recenze
+     */
+    public function setDatumVytvoreni($datumVytvoreni)
+    {
+        $this->datumVytvoreni = $datumVytvoreni;
+
+        return $this;
     }
 
 

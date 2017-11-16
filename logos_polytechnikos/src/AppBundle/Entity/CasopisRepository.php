@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Knp\Component\Pager\Paginator;
 use Lexik\Bundle\FormFilterBundle\Filter\FilterBuilderUpdater;
 use Lexik\Bundle\FormFilterBundle\Filter\Query\QueryInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Form\FormInterface;
 
 /**
@@ -43,15 +44,18 @@ class CasopisRepository extends \Doctrine\ORM\EntityRepository
         switch ($stav) {
           case 0:
             if ($user->hasRole('ROLE_EDITOR') || $user->hasRole('ROLE_ADMIN')) { $queryBuilder->where('c.stav = 0'); }
+            else { throw new AccessDeniedException('Přístup zamítnut'); }
             break;
           case 2:
             if ($user->hasRole('ROLE_REDAKTOR') || $user->hasRole('ROLE_ADMIN')) { $queryBuilder->where('c.stav = 2'); }
+            else { throw new AccessDeniedException('Přístup zamítnut'); }
             break;
           case 3:
             $queryBuilder->where('c.stav = 3');
             break;
           default:
             if ($user->hasRole('ROLE_EDITOR') || $user->hasRole('ROLE_ADMIN')) { $queryBuilder->where('c.stav = -1'); }
+            else { throw new AccessDeniedException('Přístup zamítnut'); }
         }
       }
 

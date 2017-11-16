@@ -5,10 +5,12 @@ namespace AppBundle\Controller\Backend;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 use AppBundle\Form\CasopisType;
 use AppBundle\Form\CasopisFilterType;
 use AppBundle\Entity\Casopis;
+use AppBundle\Entity\Prispevek;
 use AppBundle\Entity\Stav;
 
 /**
@@ -40,6 +42,8 @@ class CasopisController extends Controller
 
   /**
     * @Route("/add", name="add_casopis")
+    *
+    * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_REDAKTOR')")
     */
     public function addCasopisAction(Request $request)
     {
@@ -82,6 +86,8 @@ class CasopisController extends Controller
 
     /**
       * @Route("/edit/{casopis}", name="edit_casopis")
+      *
+      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_REDAKTOR')")
       */
       public function editCasopisAction(Request $request, Casopis $casopis)
       {
@@ -96,7 +102,7 @@ class CasopisController extends Controller
 
           $this->addFlash('notice', 'Časopis byl úspéšně odeslán.' );
 
-          return $this->redirectToRoute('index_casopis_backend');
+          return $this->redirectToRoute('index_casopis_backend', ['stav' => $em->getReference(Stav::class, 0)]);
         }
 
         return $this->render(
@@ -109,6 +115,18 @@ class CasopisController extends Controller
       }
 
     /**
+      * @Route("/detail/{casopis}", name="detail_casopis_backend")
+      *
+      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_REDAKTOR')")
+      */
+      public function detailAction(Request $request, Casopis $casopis)
+      {
+        return $this->render('backend/casopis/detail.html.twig', array(
+            'casopis' => $casopis,
+        ));
+      }
+
+    /**
      * @Route("/stav/{casopis}/{stav}", name="zmenit_stav_casopis")
      */
     public function zmenitStavAction(Request $request, Casopis $casopis, $stav)
@@ -118,16 +136,23 @@ class CasopisController extends Controller
         switch($stav)
         {
           case -1:
-            $stav = $em->getReference(Stav::class, -1); // Smazáno
-            break;
-          case 0:
-            $stav = $em->getReference(Stav::class, 0); // Ke schválení
-            break;
-          case 1:
-            $stav = $em->getReference(Stav::class, 1); // Schváleno
+            if(!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_EDITOR')){
+                throw $this->createAccessDeniedException('Přístup zamítnut');
+            }
+            $stav = $em->getReference(Stav::class, $stav); // Smazáno
             break;
           case 2:
-            $stav = $em->getReference(Stav::class, 2); // Publikováno
+            if(!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_EDITOR')){
+                throw $this->createAccessDeniedException('Přístup zamítnut');
+            }
+            $stav = $em->getReference(Stav::class, $stav); // Schváleno
+            break;
+          case 3:
+            if(!$this->isGranted('ROLE_ADMIN')){
+                throw $this->createAccessDeniedException('Přístup zamítnut');
+            }
+            $stav = $em->getReference(Stav::class, $stav); // Publikováno
+            $this->publishAllPrispevkyAction($casopis);
             break;
           default:
             $this->addFlash('error', 'Zadal jste neexistující stav');
@@ -141,5 +166,20 @@ class CasopisController extends Controller
         $em->flush();
 
         return $this->redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function publishAllPrispevkyAction(Casopis $casopis)
+    {
+      $em = $this->getDoctrine()->getManager();
+      $prispevky = $this->getDoctrine()->getRepository(Prispevek::class)->findBy(['casopis' => $casopis->getId()]);
+
+      foreach ($prispevky as $prispevek) {
+        $prispevek->setStav($em->getReference(Stav::class, 3));
+        $em->persist($prispevek);
+      }
+
+      $em->flush();
+
+      return;
     }
 }

@@ -22,12 +22,12 @@
                 <br>
                 <input type="submit" class="btn btn-primary" value="Filtrovat">
                 {% if filter_form.vars.value is not empty %}
-                    <a href="{{ path("index_uzivatel_uzivatel") }}" class="btn btn-danger">Zrušit filtry</a>
+                    <a href="{{ path("index_uzivatel_backend") }}" class="btn btn-danger">Zrušit filtry</a>
                 {% endif %}
                 {{ form_end(filter_form) }}
               {% if filter_form.vars.value is not empty %}
                   <div class="filter-footer">
-                      <a href="{{ path("index_uzivatel_uzivatel") }}" class="btn btn-danger btn-xs">
+                      <a href="{{ path("index_uzivatel_backend") }}" class="btn btn-danger btn-xs">
                           <i class="glyphicon glyphicon-remove"></i>
                           Zrušit filtr
                       </a>
@@ -42,6 +42,7 @@
                   <th>{{ knp_pagination_sortable(pagination, 'Uživatelské jméno', 'u.username') }}</th>
                   <th>{{ knp_pagination_sortable(pagination, 'Jméno', 'u.jmeno') }}</th>
                   <th>{{ knp_pagination_sortable(pagination, 'Příjmení', 'u.prijmeni') }}</th>
+                    <th>{{ knp_pagination_sortable(pagination, 'Aktivní', 'u.enabled') }}</th>
                   <th>{{ knp_pagination_sortable(pagination, 'Role', 'u.role') }}</th>
                 </tr>
                 </thead>
@@ -51,15 +52,12 @@
                     <td>{{ uzivatel.username }}</td>
                     <td>{{ uzivatel.jmeno}}</td>
                     <td>{{ uzivatel.prijmeni }}</td>
+                    <td>{% if uzivatel.enabled %}<span class="glyphicon glyphicon-ok success-color"></span>{% else %}<span class="glyphicon glyphicon-remove danger-color">{% endif %}</td>
                     <td>{% for role in uzivatel.roles %}{{ role }}{% if not loop.last %}, {% endif %}{% endfor %}</td>
                     <td class="text-right">
                       <a href="{{ path('edit_uzivatel', {'uzivatel' : uzivatel.id}) }}"
                          class="btn btn-primary">
                           <span class="glyphicon glyphicon-pencil"></span>
-                      </a>
-                      <a href="#"
-                         class="btn btn-danger">
-                          <span class="glyphicon glyphicon-remove"></span>
                       </a>
                     </td>
                 </tr>

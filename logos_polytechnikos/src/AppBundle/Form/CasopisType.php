@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -25,9 +26,9 @@ class CasopisType extends AbstractType
                 return $choice;
               },
             'data' => Date('Y')))
-          ->add('cislo', TextType::class, array('label' => 'Číslo časopisu'))
-          ->add('rocnik', TextType::class, array('label' => 'Ročník časopisu'))
-          ->add('casopis', FileType::class, array('label' => 'Časopis v pdf', 'data_class' => null))
+          ->add('cislo', IntegerType::class, array('label' => 'Číslo časopisu', 'attr' => array('min' => 1)))
+          ->add('rocnik', IntegerType::class, array('label' => 'Ročník časopisu', 'attr' => array('min' => 1)))
+          ->add('casopis', FileType::class, array('label' => 'Časopis v pdf', 'data_class' => null, 'required' => false))
           ->add('temata', EntityType::class, array(
               'class' => Tema::class,
               'query_builder' => function (EntityRepository $er) {

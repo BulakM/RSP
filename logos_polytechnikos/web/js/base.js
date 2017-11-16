@@ -1,6 +1,7 @@
 $(document).ready(function() {
   $('select').select2({theme: "bootstrap", width: 'style', language: 'cs'});
   $('input').addClass('form-control');
+  $('input[type=checkbox]').removeClass('form-control');
   $('textarea').addClass('form-control');
 });
 $(function() {

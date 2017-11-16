@@ -16,7 +16,7 @@ class UzivatelType extends AbstractType
     {
        $builder
             ->add('username', TextType::class, ['label' => 'Uživatelské jméno'])
-            ->add('password', TextType::class, ['label' => 'Heslo'])
+            ->add('email', TextType::class, ['label' => 'Email'])
             ->add('jmeno', TextType::class, ['label' => 'Jméno'])
             ->add('prijmeni', TextType::class, ['label' => 'Príjmení'])
             ->add('roles', ChoiceType::class, [

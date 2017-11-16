@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Knp\Component\Pager\Paginator;
 use Lexik\Bundle\FormFilterBundle\Filter\FilterBuilderUpdater;
 use Lexik\Bundle\FormFilterBundle\Filter\Query\QueryInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Form\FormInterface;
 
 /**
@@ -40,15 +41,19 @@ class PrispevekRepository extends \Doctrine\ORM\EntityRepository
       switch ($stav) {
         case 0:
           if ($user->hasRole('ROLE_EDITOR') || $user->hasRole('ROLE_ADMIN')) { $queryBuilder->where('p.stav = 0'); }
+          else { throw new AccessDeniedException('Přístup zamítnut'); }
           break;
         case 1:
           if ($user->hasRole('ROLE_RECENZENT') || $user->hasRole('ROLE_ADMIN')) { $queryBuilder->where('p.stav = 1'); }
+          else { throw new AccessDeniedException('Přístup zamítnut'); }
           break;
         case 2:
           if ($user->hasRole('ROLE_REDAKTOR') || $user->hasRole('ROLE_ADMIN')) { $queryBuilder->where('p.stav = 2'); }
+          else { throw new AccessDeniedException('Přístup zamítnut'); }
           break;
         case 3:
           if ($user->hasRole('ROLE_ADMIN')) { $queryBuilder->where('p.stav = 3'); }
+          else { throw new AccessDeniedException('Přístup zamítnut'); }
           break;
         default:
           if ($user->hasRole('ROLE_EDITOR') || $user->hasRole('ROLE_ADMIN')) { $queryBuilder->where('p.stav = -1'); }

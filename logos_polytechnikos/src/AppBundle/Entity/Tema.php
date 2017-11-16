@@ -29,6 +29,11 @@ class Tema
    */
     private $aktivni;
 
+    public function __construct()
+    {
+        $this->aktivni = 1;
+    }
+
     public function __toString()
     {
         return $this->nazev;

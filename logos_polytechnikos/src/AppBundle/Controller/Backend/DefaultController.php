@@ -11,22 +11,10 @@ class DefaultController extends Controller
 {
   /**
     * @Route("/", name="backpage")
-    * @param Request             $request
-    * @param AuthenticationUtils $authUtils
-    * @return \Symfony\Component\HttpFoundation\Response
     */
-    public function indexAction(Request $request, AuthenticationUtils $authUtils)
+    public function indexAction(Request $request)
     {
-      // get the login error if there is one
-      $error = $authUtils->getLastAuthenticationError();
-
-      // last username entered by the user
-      $lastUsername = $authUtils->getLastUsername();
-
-      return $this->render('layout/mainBackend.html.twig', array(
-          'last_username' => $lastUsername,
-          'error'         => $error,
-      ));
+      return $this->render('layout/mainBackend.html.twig');
     }
 
 }

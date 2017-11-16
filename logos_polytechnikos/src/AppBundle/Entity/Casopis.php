@@ -25,12 +25,12 @@ class Casopis
     private $rok;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="integer")
      */
     private $cislo;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="integer")
      */
     private $rocnik;
 
@@ -64,7 +64,6 @@ class Casopis
     /**
      * @ORM\Column(type="string")
      *
-     * @Assert\NotBlank(message="Nahrajte prosím soubor jako PDF")
      * @Assert\File(mimeTypes={"application/pdf"})
      */
     private $casopis;
@@ -80,6 +79,7 @@ class Casopis
 
     public function __construct($autor, $stav)
     {
+        $this->rocnik = (new \DateTime('now'))->format('y') - 9;
         $this->autor = $autor;
         $this->datumVytvoreni = new \DateTime('now');
         $this->stav = $stav;
@@ -126,7 +126,7 @@ class Casopis
 	/**
      * Get cislo
      *
-     * @return string
+     * @return integer
      */
     public function getCislo()
     {
@@ -136,7 +136,7 @@ class Casopis
 	/**
      * Set cislo
      *
-     * @return string
+     * @return integer
      */
     public function setCislo($cislo)
     {
@@ -148,7 +148,7 @@ class Casopis
     /**
        * Get rocnik
        *
-       * @return string
+       * @return integer
        */
       public function getRocnik()
       {
@@ -158,7 +158,7 @@ class Casopis
     /**
        * Set rocnik
        *
-       * @return string
+       * @return integer
        */
       public function setRocnik($rocnik)
       {

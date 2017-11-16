@@ -12,9 +12,6 @@ use AppBundle\Entity\Casopis;
 
 use AppBundle\Form\CasopisFilterType;
 
-/**
-  * @Route("/casopis")
-  */
 class CasopisController extends Controller
 {
   /**
@@ -34,6 +31,7 @@ class CasopisController extends Controller
 
       return $this->render('frontend/casopis/index.html.twig', array(
         'pagination' => $casopisy,
+        'uzaverka' => $this->getDoctrine()->getRepository(Casopis::class)->findBy(['stav' => 2], ['uzaverka' => 'ASC']),
         'filter_form' => $filter_form->createView()
       ));
     }

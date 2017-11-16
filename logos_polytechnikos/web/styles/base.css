@@ -1,6 +1,9 @@
 .margin-top-16px {
   margin-top: 16px;
 }
+.margin-top-25px {
+  margin-top: 25px;
+}
 
 .navbar {
   max-height: 50px;
@@ -61,4 +64,22 @@
 }
 #casopis_uzaverka .select2-container--bootstrap {
   display: inline-block;
+}
+.navbar .navbar-right {
+  margin-right: 0px;
+}
+input[type=checkbox] {
+  vertical-align: -2px;
+}
+.login-margin-50px {
+  margin-top: 50px;
+}
+div .redirect-to-homepage-btn{
+    display: block;
+}
+.success-color {
+    color: #5cb85c;
+}
+.danger-color {
+    color: #d9534f;
 }

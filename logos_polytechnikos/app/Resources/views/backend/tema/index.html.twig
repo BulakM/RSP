@@ -1,0 +1,38 @@
+{% extends 'layout/mainBackend.html.twig' %}
+
+{% block pagetitle %}
+  <div class="row">
+    <div class="col-lg-12">
+      <h1 class="page-header">Administrace témat</h1>
+    </div>
+  </div>
+{% endblock %}
+{% block body %}
+  <div class="row">
+    <div class="panel-heading">
+      {{ form_start(form) }}
+      {{ form_errors(form) }}
+      <div class="col-md-8 col-sm-8 col-xs-12">
+        {{ form_row(form.nazev) }}
+      </div>
+      <div class="col-md-2 col-sm-2 col-xs-12 margin-top-25px">
+          <button type="submit" class="btn btn-default" style="margin-right: inherit">Ulož téma</button>
+      </div>
+      {{ form_end(form) }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="panel-body">
+      {% for tema in temata %}
+          <a href="{{ path('toggle_tema', {'tema' : tema.id}) }}" class="btn{% if tema.aktivni == 1 %} btn-success{% else %} btn-danger{% endif %}">
+              {% if tema.aktivni == 1 %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %} {{ tema.nazev }}
+          </a>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
+{% block javascripts %}
+  <script>
+
+  </script>
+{% endblock %}

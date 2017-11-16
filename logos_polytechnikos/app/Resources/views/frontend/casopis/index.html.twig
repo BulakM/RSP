@@ -8,6 +8,29 @@
     </div>
 {% endblock %}
 {% block body %}
+    {% if uzaverka != null %}
+    <div class="row">
+      <h3>Časopisy před uzávěrkou</h3>
+      <div class="panel-body">
+        <table class="table">
+            <tr>
+                <th>Rok</th>
+                <th>Číslo</th>
+                <th>Ročník</th>
+                <th>Uzávěrka</th>
+            </tr>
+            {% for casopis in uzaverka if casopis.uzaverka|date('d.m.Y H:i') > 'now'|date('d.m.Y H:i') %}
+            <tr>
+                <td>{{ casopis.rok }}</td>
+                <td>{{ casopis.cislo }}</td>
+                <td>{{ casopis.rocnik }}</td>
+                <td>{{ casopis.uzaverka|date('d.m.Y H:i') }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+      </div>
+    </div>
+    {% endif %}
     <div class="row">
         <div class="panel-body">
           <section id="filtr"
@@ -49,7 +72,7 @@
 
                   <td class="text-right">
                       <a href="{{ asset('uploads/casopisy/' ~ casopis.casopis) }}"
-                         class="btn btn-default">
+                         class="btn btn-default" target="_blank">
                           <span class="glyphicon glyphicon-download-alt"></span>
                       </a>
                   </td>

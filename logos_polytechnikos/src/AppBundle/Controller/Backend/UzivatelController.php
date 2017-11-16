@@ -2,9 +2,11 @@
 
 namespace AppBundle\Controller\Backend;
 
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 use AppBundle\Form\UzivatelType;
 use AppBundle\Form\UzivatelEditType;
@@ -15,6 +17,8 @@ use AppBundle\Entity\User;
 
 /**
  * @Route("/uzivatel")
+ *
+ * @Security("is_granted('ROLE_ADMIN')")
 */
 class UzivatelController extends Controller
 {
@@ -51,9 +55,26 @@ class UzivatelController extends Controller
 
       if($form->isSubmitted() && $form->isValid())
       {
+        $tokenGenerator = $this->get('fos_user.util.token_generator');
+        $factory = $this->get('security.encoder_factory');
+        $encoder = $factory->getEncoder($uzivatel);
+        $heslo = substr($tokenGenerator->generateToken(), 0, 12);
+
+        $heslo_enc = $encoder->encodePassword($heslo, $uzivatel->getSalt());
+
+        $uzivatel->setPassword($heslo_enc);
+        $uzivatel->setEnabled(1);
+
         $em = $this->getDoctrine()->getManager();
         $em->persist($uzivatel);
         $em->flush();
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Vytvoření účtu u logos_polytechnikos')
+            ->setFrom('info@logos_polytechnikos.cz')
+            ->setTo($form->get('email')->getData())
+            ->setBody($this->renderView('backend/emaily/new_user.txt.twig', [ 'uzivatel' => $uzivatel, 'heslo' => $heslo ]), 'text/plain');
+        $this->get('mailer')->send($message);
 
         $this->addFlash('notice', 'Uživatel byl úspéšně uložen.' );
 
@@ -95,29 +116,4 @@ class UzivatelController extends Controller
               ]
         );
       }
-
-  /**
-    * @Route("/heslo", name="change_heslo")
-    */
-    public function hesloAction(Request $request)
-    {
-      $form = $this->createForm(PasswordEditType::class);
-      $form->handleRequest($request);
-
-      if($form->isSubmitted() && $form->isValid())
-      {
-        $em = $this->getDoctrine()->getManager();
-
-        $this->addFlash('notice', 'Vaše heslo bylo úspěšně změněno.' );
-
-        return $this->redirectToRoute('index_uzivatel_backend');
-      }
-
-      return $this->render(
-            'backend/uzivatel/heslo.html.twig',
-            [
-                'form' => $form->createView(),
-            ]
-      );
-    }
 }

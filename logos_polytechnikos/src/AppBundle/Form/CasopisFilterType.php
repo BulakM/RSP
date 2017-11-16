@@ -8,7 +8,7 @@
 
 namespace AppBundle\Form;
 
-use AppBundle\Entity\Stav;
+use AppBundle\Entity\Tema;
 use AppBundle\Entity\User;
 use Doctrine\ORM\QueryBuilder;
 use Lexik\Bundle\FormFilterBundle\Filter\Query\QueryInterface;
@@ -25,8 +25,16 @@ class CasopisFilterType extends AbstractType
             Filters\EntityFilterType::class,
             [
                 'class' => User::class,
-                'label' => 'Vyhledávání podle uživatelů',
+                'label' => 'Vyhledávání podle autorů',
                 'placeholder' => '--- Všechni uživatelé ---'
+            ]);
+
+        $builder->add('temata',
+            Filters\EntityFilterType::class,
+            [
+                'class' => Tema::class,
+                'label' => 'Vyhledávání podle témat',
+                'placeholder' => '--- Všechna témata ---',
             ]);
     }
 

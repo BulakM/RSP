@@ -1,0 +1,59 @@
+{% extends  'layout/mainBackend.html.twig' %}
+
+{% block pagetitle %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Detail časopisu: {{ casopis }}</h1>
+        </div>
+    </div>
+{% endblock %}
+{% block body %}
+  <div class="row">
+    <table class="table">
+        <tr>
+            <th>Datum vytvoření</th>
+            <th>Rok</th>
+            <th>Číslo</th>
+            <th>Ročník</th>
+            <th>Autor</th>
+            <th>Uzávěrka</th>
+            <th>Témata</th>
+            <th></th>
+        </tr>
+        <tr>
+            <td>{{ casopis.datumVytvoreni|date('Y-m-d H:i:s') }}</td>
+            <td>{{ casopis.rok }}</td>
+            <td>{{ casopis.cislo }}</td>
+            <td>{{ casopis.rocnik }}</td>
+            <td>{{ casopis.autor.username }}</td>
+            <td>{{ casopis.uzaverka|date('Y-m-d H:i:s') }}</td>
+            <td>{% for tema in casopis.temata %}{{ tema }}{% if not loop.last %}, {% endif %}{% endfor %}</td>
+            <td></td>
+        </tr>
+    </table>
+  </div>
+  <div class="row">
+  <h3>Příspěvky</h3>
+    <table class="table">
+        <tr>
+            <th>Datum vytvoření</th>
+            <th>Název</th>
+            <th>Text</th>
+            <th>Téma</th>
+            <th></th>
+        </tr>
+        {% for prispevek in casopis.prispevky if prispevek.stav.id == 2 %}
+        <tr>
+            <td>{{ prispevek.datumVytvoreni|date('Y.m.d H.i.s') }}</td>
+            <td>{{ prispevek.nazev }}</td>
+            <td>{{ prispevek.text|truncate(250, true) }}</td>
+            <td>{{ prispevek.tema }}</td>
+            <td></td>
+        </tr>
+        {% endfor %}
+    </table>
+  </div>
+{% endblock %}
+{% block javascripts %}
+
+{% endblock %}

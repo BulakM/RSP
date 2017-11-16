@@ -43,6 +43,7 @@
               <h3>Recenze</h3>
                 <table class="table">
                     <tr>
+                        <th>Datum napsání</th>
                         <th>Odbornost</th>
                         <th>Zajímavost</th>
                         <th>Aktuálnost</th>
@@ -51,6 +52,7 @@
                     </tr>
                     {% for recenze in prispevek.recenze %}
                     <tr class="{% if recenze.odbornost + recenze.zajimavost + recenze.aktualnost > 7 %}success{% else %}danger{% endif %}">
+                        <td>{{ recenze.datumVytvoreni|date('Y-m-d H:i:s') }}</td>
                         <td>{{ recenze.odbornost }}</td>
                         <td>{{ recenze.zajimavost }}</td>
                         <td>{{ recenze.aktualnost }}</td>

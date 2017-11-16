@@ -17,16 +17,16 @@
                 {{ form_row(form.prispevatel_email) }}
               </div>
               <div class="col-md-12 col-sm-12 col-xs-12">
-                {{ form_row(form.prispevek_nazev) }}
+                {{ form_row(form.nazev) }}
               </div>
               <div class="col-md-12 col-sm-12 col-xs-12">
-                {{ form_row(form.prispevek_text) }}
+                {{ form_row(form.text) }}
               </div>
               <div class="col-md-6 col-sm-6 col-xs-6">
-                {{ form_row(form.prispevek_casopis) }}
+                {{ form_row(form.casopis) }}
               </div>
               <div class="col-md-6 col-sm-6 col-xs-6">
-                {{ form_row(form.prispevek_tema) }}
+                {{ form_row(form.tema) }}
               </div>
               <br>
               <div class="col-md-12 col-sm-12 col-xs-12">
@@ -40,18 +40,23 @@
 {% endblock %}
 {% block javascripts %}
   <script>
-    $(document).ready(function(){
-      $('#prispevek_prispevek_casopis').on('change', function (){
-        $('#prispevek_prispevek_tema').html('');
+    var $casopis = $('#prispevek_casopis');
 
-        $.post(Routing.generate('get_temata_for_casopis', { casopis: $(this).val() }), function( data ) {
-          console.log(data.options);
-          $.each(data.options, function(i, d) {
+    $casopis.change(function() {
+      var $form = $(this).closest('form');
+      var data = {};
 
-              // You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
-              $('#prispevek_prispevek_tema').append('<option value="' + d['id'] + '">' + d['nazev'] + '</option>');
-          });
-        });
+      data[$casopis.attr('name')] = $casopis.val();
+
+      $.ajax({
+        url : $form.attr('action'),
+        type: $form.attr('method'),
+        data : data,
+        success: function(html) {
+          $("#prispevek_tema").select2('destroy');
+          $('#prispevek_tema').replaceWith($(html).find('#prispevek_tema'));
+          $('#prispevek_tema').select2({theme: "bootstrap", width: 'style', language: 'cs'});
+        }
       });
     });
   </script>

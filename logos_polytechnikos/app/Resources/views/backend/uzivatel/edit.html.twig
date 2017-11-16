@@ -20,7 +20,15 @@
                 {{ form_row(form.prijmeni) }}
               </div>
               <div class="col-md-6 col-sm-6 col-xs-6">
-                {{ form_row(form.roles) }}
+                <br>
+                {{ form_label(form.enabled) }} {{ form_widget(form.enabled) }}
+                <br>
+                <label for="uzivatel_roles" class="required">Uživatelské role</label>
+                <br>
+                {% for form_role in form.roles %}
+                  {{ form_label(form_role) }} {{ form_widget(form_role) }}
+                  <br>
+                {% endfor %}
               </div>
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <br>

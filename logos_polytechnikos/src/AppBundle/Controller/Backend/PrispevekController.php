@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Backend;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 use AppBundle\Form\RecenzeType;
 use AppBundle\Form\PrispevekFilterType;
@@ -42,6 +43,7 @@ class PrispevekController extends Controller
 
     /**
      * @Route("/edit/{prispevek}", name="edit_prispevek")
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function editPrispevekAction(Request $request, Prispevek $prispevek)
     {
@@ -83,20 +85,22 @@ class PrispevekController extends Controller
      */
     public function zmenitStavAction(Request $request, Prispevek $prispevek, $stav)
     {
+      $em = $this->getDoctrine()->getManager();
+
       switch($stav)
       {
         case -1:
-          $stav = $em->getReference(Stav::class, -1); // Smazáno
-          break;
-        case 0:
-          $stav = $em->getReference(Stav::class, 0); // Ke schválení
-          break;
-        case 2:
-          $stav = $em->getReference(Stav::class, 2); // Schváleno
-          break;
-        case 3:
-          $stav = $em->getReference(Stav::class, 3); // Publikováno
-          break;
+            if(!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_EDITOR')){
+                throw $this->createAccessDeniedException('Přístup zamítnut');
+            }
+            $stav = $em->getReference(Stav::class, $stav);
+            break;
+        case 1:
+            if(!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_EDITOR')){
+                throw $this->createAccessDeniedException('Přístup zamítnut');
+            }
+            $stav = $em->getReference(Stav::class, $stav);
+            break;
         default:
           $this->addFlash('error', 'Zadal jste neexistující stav');
 
@@ -105,10 +109,35 @@ class PrispevekController extends Controller
 
       $prispevek->setStav($stav);
 
-      $em = $this->getDoctrine()->getManager();
       $em->persist($prispevek);
       $em->flush();
 
       return $this->redirect($_SERVER['HTTP_REFERER']);
   }
+
+  /**
+    * @Route("/request/{prispevek}", name="request_for_remake")
+    *
+    * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')")
+    */
+    public function requestForRemakeAction(Request $request, Prispevek $prispevek)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $prispevek->setStav($em->getReference(Stav::class, -1));
+
+        $em->persist($prispevek);
+        $em->flush();
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Žádost o předělání příspěvku')
+            ->setFrom('info@logos_polytechnikos.cz')
+            ->setTo($prispevek->getPrispevatel()->getEmail())
+            ->setBody($this->renderView('backend/emaily/rewrite_request.txt.twig', [ 'prispevek' => $prispevek ]), 'text/plain');
+        $this->get('mailer')->send($message);
+
+        $this->addFlash('notice', 'Žádost byla úspěště odeslána');
+
+        return $this->redirect($_SERVER['HTTP_REFERER']);
+    }
 }

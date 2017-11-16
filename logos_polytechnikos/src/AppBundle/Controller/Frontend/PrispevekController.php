@@ -15,7 +15,6 @@ use AppBundle\Form\PrispevekFindType;
 use AppBundle\Entity\Prispevatel;
 use AppBundle\Entity\Prispevek;
 use AppBundle\Entity\Casopis;
-use AppBundle\Entity\Tema;
 use AppBundle\Entity\Stav;
 
 /**
@@ -28,16 +27,15 @@ class PrispevekController extends Controller
    */
   public function addPrispevekAction(Request $request)
   {
-      $form = $this->createForm(PrispevekType::class);
+      $prispevek = new Prispevek();
+      $form = $this->createForm(PrispevekType::class, $prispevek);
       $form->handleRequest($request);
 
-      if($form->isSubmitted())
+      if($form->isSubmitted() && $form->isValid())
       {
           $em = $this->getDoctrine()->getManager();
 
           $prispevatel = $this->getDoctrine()->getRepository(Prispevatel::class)->findOneByEmail($request->request->get('prispevek')['prispevatel_email']);
-          $casopis = $this->getDoctrine()->getRepository(Casopis::class)->findOneById($request->request->get('prispevek')['prispevek_casopis']);
-          $tema = $this->getDoctrine()->getRepository(Tema::class)->findOneById($request->request->get('prispevek')['prispevek_tema']);
 
           if ($prispevatel == null) {
             $prispevatel = new Prispevatel($request->request->get('prispevek')['prispevatel_email']);
@@ -46,23 +44,29 @@ class PrispevekController extends Controller
             $em->flush();
           }
 
-          $prispevek = new Prispevek($em->getReference(Stav::class, 0), $casopis, $prispevatel, $tema);
-          $prispevek->setHash(md5($request->request->get('prispevek')['prispevek_nazev'].$request->request->get('prispevek')['prispevatel_email']));
-          $prispevek->setNazev($request->request->get('prispevek')['prispevek_nazev']);
-          $prispevek->setText($request->request->get('prispevek')['prispevek_text']);
+          $prispevek->setHash(md5($prispevek->getNazev().$prispevatel->getEmail().uniqid()));
+          $prispevek->setPrispevatel($prispevatel);
+          $prispevek->setStav($em->getReference(Stav::class, 0));
 
           $em->persist($prispevek);
           $em->flush();
 
+          $message = \Swift_Message::newInstance()
+              ->setSubject('Odeslání příspěvku k výběrovému řízení')
+              ->setFrom('info@logos_polytechnikos.cz')
+              ->setTo($request->request->get('prispevek')['prispevatel_email'])
+              ->setBody($this->renderView('backend/emaily/new_prispevek.txt.twig', [ 'prispevek' => $prispevek ]), 'text/plain');
+          $this->get('mailer')->send($message);
+
           $this->addFlash('notice', 'Příspěvek byl úspéšně odeslán.' );
 
-          return $this->render('frontend/casopis/index.html.twig');
+          return $this->redirectToRoute('index_casopis');
       }
 
       return $this->render(
             'frontend/prispevek/add.html.twig',
             [
-                'form' => $form->createView(),
+                'form' => $form->createView()
             ]
       );
   }
@@ -106,5 +110,9 @@ class PrispevekController extends Controller
       $response->headers->set('Content-Type', 'application/json');
 
       return $response;
+    }
+
+    public function imap_utf8_fix($string) {
+        return iconv_mime_decode($string,0,"UTF-8");
     }
 }

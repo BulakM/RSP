@@ -22,12 +22,13 @@
             <br>
             <input type="submit" class="btn btn-primary" value="Filtrovat">
             {% if filter_form.vars.value is not empty %}
-                <a href="{{ path("index_prispevek_backend", {'stav' : stav}) }}" class="btn btn-danger">Zrušit filtry</a>
+                <br><br>
+                <a href="{{ path("index_prispevek_backend", {'stav' : stav.id}) }}" class="btn btn-danger">Zrušit filtry</a>
             {% endif %}
             {{ form_end(filter_form) }}
           {% if filter_form.vars.value is not empty %}
               <div class="filter-footer">
-                  <a href="{{ path("index_prispevek_backend", {'stav' : stav}) }}" class="btn btn-danger btn-xs">
+                  <a href="{{ path("index_prispevek_backend", {'stav' : stav.id}) }}" class="btn btn-danger btn-xs">
                       <i class="glyphicon glyphicon-remove"></i>
                       Zrušit filtr
                   </a>
@@ -43,6 +44,7 @@
               <th>{{ knp_pagination_sortable(pagination, 'Název', 'p.nazev') }}</th>
               <th>{{ knp_pagination_sortable(pagination, 'Text', 'p.text') }}</th>
               <th>{{ knp_pagination_sortable(pagination, 'Téma', 't.nazev') }}</th>
+              <th>{{ knp_pagination_sortable(pagination, 'Časopis', 'p.casopis') }}</th>
               <th></th>
           </tr>
         </thead>
@@ -50,20 +52,28 @@
           {% for prispevek in pagination %}
           <tr>
             <td class="col-md-1 col-sm-1 col-xs-1">{{ prispevek.datumVytvoreni|date('Y.m.d H.i.s') }}</td>
-            <td class="col-md-1 col-sm-1 col-xs-1">{{ prispevek.nazev }}</td>
-            <td class="col-md-6 col-sm-6 col-xs-6">{{ prispevek.text|truncate(250, true) }}</td>
+            <td class="col-md-2 col-sm-2 col-xs-2">{{ prispevek.nazev }}</td>
+            <td class="col-md-3 col-sm-3 col-xs-3">{{ prispevek.text|truncate(250, true) }}</td>
             <td class="col-md-1 col-sm-1 col-xs-1">{{ prispevek.tema }}</td>
+            <td class="col-md-2 col-sm-2 col-xs-2">{{ prispevek.casopis }}</td>
             <td class="col-md-3 col-sm-3 col-xs-3 text-right">
               {% if stav.id == 0 %}
                 <a href="{{ path('zmenit_stav_prispevek', {'prispevek' : prispevek.id, 'stav' : 1}) }}"
                    class="btn btn-success">
                     Schválit
                 </a>
-              {% elseif stav.id == 1 %}
-                <a href="{{ path('add_recenzi', {'prispevek' : prispevek.id}) }}"
-                   class="btn btn-success">
-                    Napsat recenzi
+                <a href="{{ path('request_for_remake', {'prispevek' : prispevek.id}) }}"
+                   class="btn btn-warning">
+                    Žádost o přepsání
                 </a>
+              {% elseif stav.id == 1 %}
+                {% for recenze in prispevek.recenze if recenze.autor == app.user %}
+                {% else %}
+                    <a href="{{ path('add_recenzi', {'prispevek' : prispevek.id}) }}"
+                       class="btn btn-success">
+                        Napsat recenzi
+                    </a>
+                {% endfor %}
               {% endif %}
               <a href="{{ path('detail_prispevek_backend', {'prispevek' : prispevek.id}) }}"
                  class="btn btn-info">
