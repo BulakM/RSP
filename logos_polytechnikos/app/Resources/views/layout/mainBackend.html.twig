@@ -40,15 +40,15 @@
         <!-- /.navbar-header -->
         <ul class="nav navbar-top-links navbar-right">
             <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="{{ path('index_casopis') }}">
                     <i class="fa fa-user fa-fw"></i> {{ app.user.jmeno }} {{ app.user.prijmeni }} <i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-user">
                     <li class="text-center"><b>{{ app.user.jmeno }}</b>
                     </li>
                     <li class="divider"></li>
-                    <li><a href="{{ path('index_casopis') }}"><i class="fa fa-sign-out fa-fw"></i> Úvodní stránka</a></li>
-                    <li><a href="{{ path('fos_user_change_password') }}"><i class="fa fa-sign-out fa-fw"></i> Změna hesla</a></li>
+                    <li><a href="{{ path('index_casopis') }}"><i class="fa fa-clipboard" aria-hidden="true"></i> Úvodní stránka</a></li>
+                    <li><a href="{{ path('fos_user_change_password') }}"><i class="fa fa-cogs" aria-hidden="true"></i> Změna hesla</a></li>
                     <li><a href="{{ path('fos_user_security_logout') }}"><i class="fa fa-sign-out fa-fw"></i> Odhlásit se</a></li>
                 </ul>
                 <!-- /.dropdown-user -->
@@ -70,68 +70,86 @@
                       <!-- /input-group -->
                   </li>
                   <li>
-                      <a href="#"><i class="glyphicon glyphicon-list-alt"></i>
+                      <a href="#"><i class="fa fa-file" aria-hidden="true"></i>
                          Příspěvky <span class="fa arrow"></span>
                       </a>
                       <ul class="nav nav-second-level">
-                          <li>
-                              <a href="{{ path('index_prispevek_backend', {'stav' : 3}) }}"><i class="fa fa-dashboard fa-fw"></i> Publikované příspěvky</a>
-                          </li>
-                          <li>
-                              <a href="{{ path('index_prispevek_backend', {'stav' : 2}) }}"> &nbsp;<i class="glyphicon glyphicon-calendar"></i> Schválené příspěvky</a>
-                          </li>
-                          <li>
-                              <a href="{{ path('index_prispevek_backend', {'stav' : 1}) }}"> &nbsp;<i class="glyphicon glyphicon-calendar"></i> Příspěvky v recenzním řízení</a>
-                          </li>
-                          <li>
-                              <a href="{{ path('index_prispevek_backend', {'stav' : 0}) }}"> &nbsp;<i class="glyphicon glyphicon-calendar"></i> Příspěvky ke schválení</a>
-                          </li>
-                          <li>
-                              <a href="{{ path('index_prispevek_backend', {'stav' : -1}) }}"> &nbsp;<i class="glyphicon glyphicon-calendar"></i> Smazané příspěvky</a>
-                          </li>
+                          {% if is_granted('ROLE_ADMIN') %}
+                              <li>
+                                  <a href="{{ path('index_prispevek_backend', {'stav' : 3}) }}"> &nbsp;<i class="fa fa-check" aria-hidden="true"></i> Publikované příspěvky</a>
+                              </li>
+                          {% endif %}
+                          {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_REDAKTOR')%}
+                              <li>
+                                  <a href="{{ path('index_prispevek_backend', {'stav' : 2}) }}"> &nbsp;<i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Schválené příspěvky</a>
+                              </li>
+                          {% endif %}
+                          {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_RECENZENT')%}
+                              <li>
+                                  <a href="{{ path('index_prispevek_backend', {'stav' : 1}) }}"> &nbsp;<i class="fa fa-university" aria-hidden="true"></i> Recenzní řízení</a>
+                              </li>
+                          {% endif %}
+                          {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')%}
+                              <li>
+                                  <a href="{{ path('index_prispevek_backend', {'stav' : 0}) }}"> &nbsp;<i class="fa fa-file-archive-o" aria-hidden="true"></i> Příspěvky ke schválení</a>
+                              </li>
+                              <li>
+                                  <a href="{{ path('index_prispevek_backend', {'stav' : -1}) }}"> &nbsp;<i class="fa fa-trash-o" aria-hidden="true"></i> Smazané příspěvky</a>
+                              </li>
+                          {% endif %}
                       </ul>
                       <!-- /.nav-second-level -->
                   </li>
                   <li>
-                      <a href="#"><i class="glyphicon glyphicon-list-alt"></i>
-                         Časopisy <span class="fa arrow"></span>
-                      </a>
-                      <ul class="nav nav-second-level">
-                          <li>
-                              <a href="{{ path('add_casopis') }}"><i class="fa fa-dashboard fa-fw"></i> Přidat časopis</a>
-                          </li>
-                          <li>
-                              <a href="{{ path('index_casopis_backend', {'stav' : 3}) }}"><i class="fa fa-dashboard fa-fw"></i> Publikované časopisy</a>
-                          </li>
-                          <li>
-                              <a href="{{ path('index_casopis_backend', {'stav' : 2}) }}"> &nbsp;<i class="glyphicon glyphicon-calendar"></i> Schválené časopisy</a>
-                          </li>
-                          <li>
-                              <a href="{{ path('index_casopis_backend', {'stav' : 0}) }}"> &nbsp;<i class="glyphicon glyphicon-calendar"></i> Časopisy ke schválení</a>
-                          </li>
-                          <li>
-                              <a href="{{ path('index_casopis_backend', {'stav' : -1}) }}"> &nbsp;<i class="glyphicon glyphicon-calendar"></i> Smazané časopisy</a>
-                          </li>
-                      </ul>
-                      <!-- /.nav-second-level -->
-                  </li>
-                  <li>
-                      <a href="#"><i class="glyphicon glyphicon-list-alt"></i>
-                         Uživatelé <span class="fa arrow"></span>
-                      </a>
-                      <ul class="nav nav-second-level">
-                          <li>
-                              <a href="{{ path('add_uzivatel') }}"> &nbsp;<i class="glyphicon glyphicon-calendar"></i> Přidat uživatele</a>
-                          </li>
-                          <li>
-                              <a href="{{ path('index_uzivatel_backend') }}"><i class="fa fa-dashboard fa-fw"></i> Přehled uživatelů</a>
-                          </li>
-                      </ul>
-                      <!-- /.nav-second-level -->
-                  </li>
-                  <li>
-                      <a href="{{ path('add_tema') }}"><i class="fa fa-dashboard fa-fw"></i> Přidat téma</a>
-                  </li>
+                        <a href="#"><i class="glyphicon glyphicon-list-alt"></i>
+                            Časopisy <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level">
+                            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_REDAKTOR') %}
+                                <li>
+                                    <a href="{{ path('add_casopis') }}"><i class="fa fa-plus" aria-hidden="true"></i> Přidat časopis</a>
+                                </li>
+                            {% endif %}
+                            <li>
+                                <a href="{{ path('index_casopis_backend', {'stav' : 3}) }}"><i class="fa fa-download" aria-hidden="true"></i> Publikované časopisy</a>
+                            </li>
+                            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_REDAKTOR')%}
+                                <li>
+                                    <a href="{{ path('index_casopis_backend', {'stav' : 2}) }}"> <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Schválené časopisy</a>
+                                </li>
+                            {% endif %}
+                            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')%}
+                                <li>
+                                    <a href="{{ path('index_casopis_backend', {'stav' : 0}) }}"> <i class="fa fa-file-archive-o" aria-hidden="true"></i> Časopisy ke schválení</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('index_casopis_backend', {'stav' : -1}) }}"> <i class="fa fa-trash-o" aria-hidden="true"></i> Smazané časopisy</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                  {% if is_granted('ROLE_ADMIN') %}
+                      <li>
+                          <a href="#"><span class="glyphicon glyphicon-user"></span>
+                             Uživatelé <span class="fa arrow"></span>
+                          </a>
+                          <ul class="nav nav-second-level">
+                              <li>
+                                  <a href="{{ path('add_uzivatel') }}"> &nbsp;<i class="fa fa-plus" aria-hidden="true"></i> Přidat uživatele</a>
+                              </li>
+                              <li>
+                                  <a href="{{ path('index_uzivatel_backend') }}"><i class="fa fa-users" aria-hidden="true"></i> Přehled uživatelů</a>
+                              </li>
+                          </ul>
+                          <!-- /.nav-second-level -->
+                      </li>
+                  {% endif %}
+                  {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_REDAKTOR') %}
+                      <li>
+                          <a href="{{ path('add_tema') }}"><i class="fa fa-picture-o" aria-hidden="true"></i> Přidat téma</a>
+                      </li>
+                  {% endif %}
                 </ul>
             </div>
             <!-- /.sidebar-collapse -->

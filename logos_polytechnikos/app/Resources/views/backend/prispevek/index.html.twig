@@ -44,13 +44,13 @@
               <th>{{ knp_pagination_sortable(pagination, 'Název', 'p.nazev') }}</th>
               <th>{{ knp_pagination_sortable(pagination, 'Text', 'p.text') }}</th>
               <th>{{ knp_pagination_sortable(pagination, 'Téma', 't.nazev') }}</th>
-              <th>{{ knp_pagination_sortable(pagination, 'Časopis', 'p.casopis') }}</th>
+              <th>{{ knp_pagination_sortable(pagination, 'Časopis', 'c.id') }}</th>
               <th></th>
           </tr>
         </thead>
         <tbody>
           {% for prispevek in pagination %}
-          <tr>
+          <tr class="{{ prispevek.stav.id == -1 ? 'danger' : '' }}">
             <td class="col-md-1 col-sm-1 col-xs-1">{{ prispevek.datumVytvoreni|date('Y.m.d H.i.s') }}</td>
             <td class="col-md-2 col-sm-2 col-xs-2">{{ prispevek.nazev }}</td>
             <td class="col-md-3 col-sm-3 col-xs-3">{{ prispevek.text|truncate(250, true) }}</td>
@@ -59,11 +59,11 @@
             <td class="col-md-3 col-sm-3 col-xs-3 text-right">
               {% if stav.id == 0 %}
                 <a href="{{ path('zmenit_stav_prispevek', {'prispevek' : prispevek.id, 'stav' : 1}) }}"
-                   class="btn btn-success">
+                   class="btn btn-success confirm">
                     Schválit
                 </a>
                 <a href="{{ path('request_for_remake', {'prispevek' : prispevek.id}) }}"
-                   class="btn btn-warning">
+                   class="btn btn-warning confirm">
                     Žádost o přepsání
                 </a>
               {% elseif stav.id == 1 %}
@@ -79,14 +79,20 @@
                  class="btn btn-info">
                   <span class="glyphicon glyphicon-search"></span>
               </a>
-              <a href="{{ path('edit_prispevek', {'prispevek' : prispevek.id}) }}"
-                 class="btn btn-primary">
-                  <span class="glyphicon glyphicon-pencil"></span>
-              </a>
-              <a href="{{ path('zmenit_stav_prispevek', {'prispevek' : prispevek.id, 'stav' : -1}) }}"
-                 class="btn btn-danger">
-                  <span class="glyphicon glyphicon-remove"></span>
-              </a>
+              {% if is_granted('ROLE_ADMIN') %}
+                  <a href="{{ path('edit_prispevek', {'prispevek' : prispevek.id}) }}"
+                     class="btn btn-primary">
+                      <span class="glyphicon glyphicon-pencil"></span>
+                  </a>
+              {% endif %}
+              {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')%}
+                {% if stav.id != -1 %}
+                  <a href="{{ path('zmenit_stav_prispevek', {'prispevek' : prispevek.id, 'stav' : -1}) }}"
+                     class="btn btn-danger confirm">
+                      <span class="glyphicon glyphicon-remove"></span>
+                  </a>
+                {% endif %}
+              {% endif %}
             </td>
           </tr>
           {% endfor %}

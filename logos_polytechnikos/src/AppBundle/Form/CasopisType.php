@@ -47,7 +47,6 @@ class CasopisType extends AbstractType
               'widget' => 'choice',
               'required' => false,
               'placeholder' => array('year' => 'Rok', 'month' => 'Měsíc', 'day' => 'Den', 'hour' => 'hodina', 'minute' => 'Minuta'),
-              'format' => 'dd-MM-yyyy HH:mm:ss'
             ]);
     }
 }

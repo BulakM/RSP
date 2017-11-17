@@ -83,3 +83,21 @@ div .redirect-to-homepage-btn{
 .danger-color {
     color: #d9534f;
 }
+th .asc::after {
+    padding-left: 5px;
+    font-family: 'Glyphicons Halflings';
+    content: "\e155";
+    color: #EE5757;
+}
+th .desc::after {
+    padding-left: 5px;
+    font-family: 'Glyphicons Halflings';
+    content: "\e156";
+    color: #EE5757;
+}
+th .sortable::after {
+    padding-left: 5px;
+    font-family: 'Glyphicons Halflings';
+    content: "\e150";
+    color: #B5B5B5;
+}

@@ -49,13 +49,13 @@
                   <th>{{ knp_pagination_sortable(pagination, 'Ročník', 'c.rocnik') }}</th>
                   <th>{{ knp_pagination_sortable(pagination, 'Autor', 'u.username') }}</th>
                   <th>{{ knp_pagination_sortable(pagination, 'Uzávěrka', 'c.uzaverka') }}</th>
-                  <th>{{ knp_pagination_sortable(pagination, 'Témata', 't.nazev') }}</th>
+                  <th>Témata</th>
                   <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for casopis in pagination %}
-                  <tr>
+                  <tr class="{{ casopis.stav.id == -1 ? 'danger' : '' }}">
                       <td>{{ casopis.datumVytvoreni|date('Y-m-d H:i:s') }}</td>
                       <td>{{ casopis.rok }}</td>
                       <td>{{ casopis.cislo }}</td>
@@ -66,12 +66,12 @@
                       <td class="text-right">
                         {% if stav.id == 0 %}
                           <a href="{{ path('zmenit_stav_casopis', {'casopis' : casopis.id, 'stav' : 2}) }}"
-                             class="btn btn-warning">
+                             class="btn btn-warning confirm">
                               Schválit
                           </a>
                         {% elseif stav.id == 2 and casopis.uzaverka|date('Y-m-d H:i:s') < 'now'|date('Y-m-d H:i:s') and casopis.casopis != null %}
                           <a href="{{ path('zmenit_stav_casopis', {'casopis' : casopis.id, 'stav' : 3}) }}"
-                             class="btn btn-success">
+                             class="btn btn-success confirm">
                               Publikovat
                           </a>
                         {% endif %}
@@ -85,15 +85,19 @@
                            class="btn btn-info">
                             <span class="glyphicon glyphicon-search"></span>
                         </a>
-                        <a href="{{ path('edit_casopis', {'casopis' : casopis.id}) }}"
-                           class="btn btn-primary">
-                            <span class="glyphicon glyphicon-pencil"></span>
-                        </a>
-                        {% if stav.id != -1 %}
-                          <a href="{{ path('zmenit_stav_casopis', {'casopis' : casopis.id, 'stav' : -1}) }}"
-                             class="btn btn-danger">
-                              <span class="glyphicon glyphicon-remove"></span>
-                          </a>
+                        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_REDAKTOR')%}
+                            <a href="{{ path('edit_casopis', {'casopis' : casopis.id}) }}"
+                               class="btn btn-primary">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </a>
+                        {% endif %}
+                        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')%}
+                            {% if stav.id != -1 %}
+                              <a href="{{ path('zmenit_stav_casopis', {'casopis' : casopis.id, 'stav' : -1}) }}"
+                                 class="btn btn-danger confirm">
+                                  <span class="glyphicon glyphicon-remove"></span>
+                              </a>
+                            {% endif %}
                         {% endif %}
                       </td>
                   </tr>

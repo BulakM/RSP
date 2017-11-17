@@ -35,8 +35,9 @@ class PrispevekRepository extends \Doctrine\ORM\EntityRepository
   public function findAllWithPaginator($items_per_page, $page = 1, FormInterface $filterForm, $stav, $user)
   {
       $queryBuilder = $this->createQueryBuilder('p')
-          ->select(['p', 't'])
-          ->leftJoin('p.tema', 't');
+          ->select(['p', 't', 'c'])
+          ->leftJoin('p.tema', 't')
+          ->join('p.casopis', 'c');
 
       switch ($stav) {
         case 0:
@@ -68,7 +69,6 @@ class PrispevekRepository extends \Doctrine\ORM\EntityRepository
           [
               'defaultSortFieldName' => 'p.id',
               'defaultSortDirection' => 'DESC',
-              'wrap-queries' => true
           ]
       );
   }

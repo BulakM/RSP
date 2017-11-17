@@ -45,7 +45,6 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
           [
               'defaultSortFieldName' => 'u.id',
               'defaultSortDirection' => 'DESC',
-              'wrap-queries' => true
           ]
       );
   }

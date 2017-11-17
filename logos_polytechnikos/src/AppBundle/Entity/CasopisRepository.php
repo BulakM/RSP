@@ -68,7 +68,6 @@ class CasopisRepository extends \Doctrine\ORM\EntityRepository
           [
               'defaultSortFieldName' => 'c.id',
               'defaultSortDirection' => 'DESC',
-              'wrap-queries' => true
           ]
       );
   }
