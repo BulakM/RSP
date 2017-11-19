@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\Backend;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -56,16 +57,18 @@ class CasopisController extends Controller
 
       if($form->isSubmitted() && $form->isValid())
       {
-        $file = $casopis->getCasopis();
+        if ($casopis->getCasopis() != null) {
+            $file = $casopis->getCasopis();
 
-        $fileName = md5(uniqid()).'.'.$file->guessExtension();
+            $fileName = md5(uniqid()).'.'.$file->guessExtension();
 
-        $file->move(
-            $this->getParameter('casopis_directory'),
-            $fileName
-        );
+            $file->move(
+                $this->getParameter('casopis_directory'),
+                $fileName
+            );
 
-        $casopis->setCasopis($fileName);
+            $casopis->setCasopis($fileName);
+        }
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($casopis);
@@ -73,7 +76,7 @@ class CasopisController extends Controller
 
         $this->addFlash('notice', 'Časopis byl úspéšně odeslán.' );
 
-        return $this->redirectToRoute('index_casopis_backend', ['stav' => $em->getReference(Stav::class, 0)]);
+        return $this->redirectToRoute('index_casopis_backend', ['stav' => ($this->getUser()->hasRole('ROLE_ADMIN')) ? 0 : 2]);
       }
 
       return $this->render(
@@ -91,18 +94,39 @@ class CasopisController extends Controller
       */
       public function editCasopisAction(Request $request, Casopis $casopis)
       {
+        if($casopis->getStav()->getId() == -1 or $casopis->getStav()->getId() == 3){
+            throw $this->createAccessDeniedException('Nelze editovat smazané a publikované časopisy');
+        }
+
+        $oldCasopis = $casopis->getCasopis();
+
         $form = $this->createForm(CasopisType::class, $casopis);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid())
         {
           $em = $this->getDoctrine()->getManager();
+
+          if ($casopis->getCasopis() != null) {
+              $file = $casopis->getCasopis();
+
+              $fileName = md5(uniqid()).'.'.$file->guessExtension();
+
+              $file->move(
+                  $this->getParameter('casopis_directory'),
+                  $fileName
+              );
+
+              $casopis->setCasopis($fileName);
+          }
+          else { $casopis->setCasopis($oldCasopis); }
+
           $em->persist($casopis);
           $em->flush();
 
           $this->addFlash('notice', 'Časopis byl úspéšně odeslán.' );
 
-          return $this->redirectToRoute('index_casopis_backend', ['stav' => $em->getReference(Stav::class, 0)]);
+          return $this->redirectToRoute('index_casopis_backend', ['stav' => $casopis->getStav()->getId()]);
         }
 
         return $this->render(
@@ -141,6 +165,12 @@ class CasopisController extends Controller
             }
             $stav = $em->getReference(Stav::class, $stav); // Smazáno
             break;
+          case 0:
+              if(!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_EDITOR')){
+                  throw $this->createAccessDeniedException('Přístup zamítnut');
+              }
+              $stav = $em->getReference(Stav::class, $stav);
+              break;
           case 2:
             if(!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_EDITOR')){
                 throw $this->createAccessDeniedException('Přístup zamítnut');
@@ -174,7 +204,12 @@ class CasopisController extends Controller
       $prispevky = $this->getDoctrine()->getRepository(Prispevek::class)->findBy(['casopis' => $casopis->getId()]);
 
       foreach ($prispevky as $prispevek) {
-        $prispevek->setStav($em->getReference(Stav::class, 3));
+        if ($prispevek->getStav()->getId() == 2) {
+           $prispevek->setStav($em->getReference(Stav::class, 3));
+        }
+        else {
+            $prispevek->setStav($em->getReference(Stav::class, -1));
+        }
         $em->persist($prispevek);
       }
 

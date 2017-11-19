@@ -8,7 +8,7 @@ $(function() {
     $('#side-menu').metisMenu({
        toggle: false // disable the auto collapse. Default: true.
      });
-    $('.confirm').on("click", function(){
+    $('.confirm').on("click", function(event){
 
         $('.modal-content').html(
             ' <div class="modal-header">\n' +
@@ -19,8 +19,8 @@ $(function() {
             '   Opravdu chcete tuto akci provést?' +
             ' </div>\n' +
             ' <div class="modal-footer">\n' +
-            '    <a type="button" class="btn btn-success">Provést</a>\n' +
-            '    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>\n' +
+            '    <a type="button" class="btn btn-success">Ano</a>\n' +
+            '    <button type="button" class="btn btn-danger" data-dismiss="modal">Ne</button>\n' +
             ' </div>'
         );
 

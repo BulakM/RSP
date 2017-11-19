@@ -12,7 +12,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 use Doctrine\ORM\EntityRepository;
 
-use AppBundle\Entity\Stav;
 use AppBundle\Entity\Tema;
 
 class CasopisType extends AbstractType
@@ -21,14 +20,15 @@ class CasopisType extends AbstractType
     {
        $builder
           ->add('rok', ChoiceType::class, array(
-            'choices' => range(Date('Y') - 10, date('Y') + 4),
+            'choices' => range(date('Y') - 10, date('Y') + 4),
             'choice_label' => function ($choice) {
                 return $choice;
               },
-            'data' => Date('Y')))
+            'data' => ($builder->getData()->getId() != null) ? $builder->getData()->getRok() : date('Y')
+            ))
           ->add('cislo', IntegerType::class, array('label' => 'Číslo časopisu', 'attr' => array('min' => 1)))
           ->add('rocnik', IntegerType::class, array('label' => 'Ročník časopisu', 'attr' => array('min' => 1)))
-          ->add('casopis', FileType::class, array('label' => 'Časopis v pdf', 'data_class' => null, 'required' => false))
+          ->add('casopis', FileType::class, array('label' => 'Časopis v pdf', 'required' => false, 'data_class' => null))
           ->add('temata', EntityType::class, array(
               'class' => Tema::class,
               'query_builder' => function (EntityRepository $er) {
@@ -47,6 +47,7 @@ class CasopisType extends AbstractType
               'widget' => 'choice',
               'required' => false,
               'placeholder' => array('year' => 'Rok', 'month' => 'Měsíc', 'day' => 'Den', 'hour' => 'hodina', 'minute' => 'Minuta'),
+              'data' => ($builder->getData()->getId() != null) ? $builder->getData()->getUzaverka() : new \DateTime('now')
             ]);
     }
 }

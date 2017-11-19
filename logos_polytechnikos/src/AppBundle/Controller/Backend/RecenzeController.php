@@ -27,6 +27,8 @@ class RecenzeController extends Controller
     */
     public function addRecenziAction(Request $request, Prispevek $prispevek)
     {
+      foreach ($prispevek->getRecenze() as $rec) { if ($rec->getAutor() == $this->getUser()) { throw $this->createAccessDeniedException('Přístup zamítnut'); }}
+
       $recenze = new Recenze($this->getUser(), $prispevek);
 
       $form = $this->createForm(RecenzeType::class, $recenze);
@@ -63,6 +65,8 @@ class RecenzeController extends Controller
     */
     public function editRecenziAction(Request $request, Recenze $recenze)
     {
+      if ($recenze->getAutor() != $this->getUser()) { throw $this->createAccessDeniedException('Přístup zamítnut'); }
+
       $form = $this->createForm(RecenzeEditType::class, $recenze);
       $form->handleRequest($request);
 

@@ -9,9 +9,8 @@
 {% endblock %}
 {% block body %}
     {% if uzaverka != null %}
-    <div class="row">
-      <h3>Časopisy před uzávěrkou</h3>
-      <div class="panel-body">
+    <div class="row container">
+        <h3>Časopisy před uzávěrkou</h3>
         <table class="table">
             <tr>
                 <th>Rok</th>
@@ -28,7 +27,6 @@
             </tr>
             {% endfor %}
         </table>
-      </div>
     </div>
     {% endif %}
     <div class="row">
@@ -70,12 +68,14 @@
                   <td>{{ casopis.cislo }}</td>
                   <td>{{ casopis.rocnik }}</td>
 
-                  <td class="text-right">
-                      <a href="{{ asset('uploads/casopisy/' ~ casopis.casopis) }}"
-                         class="btn btn-default" target="_blank">
-                          <span class="glyphicon glyphicon-download-alt"></span>
-                      </a>
-                  </td>
+                  {% if casopis.casopis != null %}
+                    <td class="text-right">
+                        <a href="{{ asset('uploads/casopisy/' ~ casopis.casopis) }}"
+                           class="btn btn-default" target="_blank">
+                            <span class="glyphicon glyphicon-download-alt"></span>
+                        </a>
+                    </td>
+                  {% endif %}
               </tr>
               {% endfor %}
           </table>

@@ -45,7 +45,7 @@ class Recenze
       private $datumVytvoreni;
 
   	/**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="recenze")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
   	  * @ORM\JoinColumn(name="autor", referencedColumnName="id")
      */
     private $autor;

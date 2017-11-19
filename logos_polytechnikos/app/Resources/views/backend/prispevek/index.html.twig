@@ -3,7 +3,7 @@
 {% block pagetitle %}
   <div class="row">
     <div class="col-lg-12">
-      <h1 class="page-header">Administrace příspěvků</h1>
+      <h1 class="page-header">Administrace příspěvků : {{ stav }}</h1>
     </div>
   </div>
 {% endblock %}
@@ -51,7 +51,7 @@
         <tbody>
           {% for prispevek in pagination %}
           <tr class="{{ prispevek.stav.id == -1 ? 'danger' : '' }}">
-            <td class="col-md-1 col-sm-1 col-xs-1">{{ prispevek.datumVytvoreni|date('Y.m.d H.i.s') }}</td>
+            <td class="col-md-1 col-sm-1 col-xs-1">{{ prispevek.datumVytvoreni|date('d.m.Y H.i') }}</td>
             <td class="col-md-2 col-sm-2 col-xs-2">{{ prispevek.nazev }}</td>
             <td class="col-md-3 col-sm-3 col-xs-3">{{ prispevek.text|truncate(250, true) }}</td>
             <td class="col-md-1 col-sm-1 col-xs-1">{{ prispevek.tema }}</td>
@@ -79,18 +79,17 @@
                  class="btn btn-info">
                   <span class="glyphicon glyphicon-search"></span>
               </a>
-              {% if is_granted('ROLE_ADMIN') %}
-                  <a href="{{ path('edit_prispevek', {'prispevek' : prispevek.id}) }}"
-                     class="btn btn-primary">
-                      <span class="glyphicon glyphicon-pencil"></span>
-                  </a>
-              {% endif %}
               {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')%}
                 {% if stav.id != -1 %}
                   <a href="{{ path('zmenit_stav_prispevek', {'prispevek' : prispevek.id, 'stav' : -1}) }}"
                      class="btn btn-danger confirm">
                       <span class="glyphicon glyphicon-remove"></span>
                   </a>
+                {% else %}
+                    <a href="{{ path('zmenit_stav_prispevek', {'prispevek' : prispevek.id, 'stav' : 0}) }}"
+                       class="btn btn-success confirm">
+                        <span class="glyphicon glyphicon-arrow-up"></span>
+                    </a>
                 {% endif %}
               {% endif %}
             </td>

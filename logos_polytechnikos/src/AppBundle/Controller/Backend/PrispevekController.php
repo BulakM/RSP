@@ -9,7 +9,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 use AppBundle\Form\RecenzeType;
 use AppBundle\Form\PrispevekFilterType;
-use AppBundle\Form\PrispevekEditType;
 
 use AppBundle\Entity\Prispevek;
 use AppBundle\Entity\Stav;
@@ -41,35 +40,6 @@ class PrispevekController extends Controller
       ));
     }
 
-    /**
-     * @Route("/edit/{prispevek}", name="edit_prispevek")
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
-    public function editPrispevekAction(Request $request, Prispevek $prispevek)
-    {
-        $form = $this->createForm(PrispevekEditType::class, $prispevek);
-        $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid())
-        {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($prispevek);
-            $em->flush();
-
-            $this->addFlash('notice', 'Příspěvek byl úspéšně odeslán.' );
-
-            return $this->render('frontend/casopis/index.html.twig');
-        }
-
-        return $this->render(
-              'backend/prispevek/edit.html.twig',
-              [
-                  'form' => $form->createView(),
-                  'prispevek' => $prispevek,
-              ]
-        );
-    }
-
   /**
     * @Route("/detail/{prispevek}", name="detail_prispevek_backend")
     */
@@ -90,6 +60,12 @@ class PrispevekController extends Controller
       switch($stav)
       {
         case -1:
+            if(!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_EDITOR')){
+                throw $this->createAccessDeniedException('Přístup zamítnut');
+            }
+            $stav = $em->getReference(Stav::class, $stav);
+            break;
+        case 0:
             if(!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_EDITOR')){
                 throw $this->createAccessDeniedException('Přístup zamítnut');
             }

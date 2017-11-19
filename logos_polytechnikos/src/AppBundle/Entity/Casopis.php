@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -64,7 +63,9 @@ class Casopis
     /**
      * @ORM\Column(type="string")
      *
-     * @Assert\File(mimeTypes={"application/pdf"})
+     * @Assert\File(
+     *  mimeTypes={"application/pdf"})
+     *  mimeTypesMessage = "Lze nahrávat pouze PDF soubory"
      */
     private $casopis;
 

@@ -29,7 +29,25 @@
                 {{ form_row(form.temata) }}
               </div>
               <div class="col-md-6 col-sm-6 col-xs-12">
-                {{ form_row(form.casopis) }}
+                  {% if casopis.casopis != null %}
+                      {{ form_label(form.casopis) }}
+                      {{ form_errors(form.casopis) }}
+                      <div class="row">
+                          <div class="col-md-1 col-sm-1 col-xs-1">
+                                  <a href="{{ asset('uploads/casopisy/' ~ casopis.casopis) }}"
+                                     class="btn btn-default" target="_blank">
+                                      <span class="glyphicon glyphicon-download-alt"></span>
+                                  </a>
+                          </div>
+                          <div class="col-md-11 col-sm-11 col-xs-11">
+                              {{ form_widget(form.casopis) }}
+                          </div>
+                      </div>
+                  {% else %}
+                      {{ form_label(form.casopis) }}<br>
+                      {{ form_errors(form.casopis) }}
+                      {{ form_widget(form.casopis) }}
+                  {% endif %}
               </div>
               <div class="col-md-12 col-sm-12 col-xs-12">
                   <br>

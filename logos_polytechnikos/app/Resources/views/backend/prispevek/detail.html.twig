@@ -8,7 +8,7 @@
     </div>
 {% endblock %}
 {% block body %}
-  <div class="row">
+  <div class="row container-fluid">
     <table class="table">
         <tr>
             <th>Datum vytvoření</th>
@@ -19,7 +19,7 @@
             <th></th>
         </tr>
         <tr>
-            <td>{{ prispevek.datumVytvoreni|date('Y.m.d H.i.s') }}</td>
+            <td>{{ prispevek.datumVytvoreni|date('d.m.Y H:i') }}</td>
             <td>{{ prispevek.nazev }}</td>
             <td>{{ prispevek.text }}</td>
             <td>{{ prispevek.prispevatel.email }}</td>
@@ -28,7 +28,7 @@
         </tr>
     </table>
   </div>
-  <div class="row">
+  <div class="row container-fluid">
   <h3>Recenze</h3>
     <table class="table">
         <tr>
@@ -41,7 +41,7 @@
         </tr>
         {% for recenze in prispevek.recenze %}
         <tr class="{% if recenze.odbornost + recenze.zajimavost + recenze.aktualnost > 7 %}success{% else %}danger{% endif %}">
-            <td>{{ recenze.datumVytvoreni|date('Y-m-d H:i:s') }}</td>
+            <td>{{ recenze.datumVytvoreni|date('d.m.Y H:i') }}</td>
             <td>{{ recenze.odbornost }}</td>
             <td>{{ recenze.zajimavost }}</td>
             <td>{{ recenze.aktualnost }}</td>

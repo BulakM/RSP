@@ -8,7 +8,7 @@
     </div>
 {% endblock %}
 {% block body %}
-  <div class="row">
+  <div class="row container">
     <table class="table">
         <tr>
             <th>Datum vytvoření</th>
@@ -21,18 +21,18 @@
             <th></th>
         </tr>
         <tr>
-            <td>{{ casopis.datumVytvoreni|date('Y-m-d H:i:s') }}</td>
+            <td>{{ casopis.datumVytvoreni|date('d.m.Y H:i') }}</td>
             <td>{{ casopis.rok }}</td>
             <td>{{ casopis.cislo }}</td>
             <td>{{ casopis.rocnik }}</td>
             <td>{{ casopis.autor.username }}</td>
-            <td>{{ casopis.uzaverka|date('Y-m-d H:i:s') }}</td>
+            <td>{{ casopis.uzaverka|date('d.m.Y H:i') }}</td>
             <td>{% for tema in casopis.temata %}{{ tema }}{% if not loop.last %}, {% endif %}{% endfor %}</td>
             <td></td>
         </tr>
     </table>
   </div>
-  <div class="row">
+  <div class="row container-fluid">
   <h3>Příspěvky</h3>
     <table class="table">
         <tr>
@@ -44,7 +44,7 @@
         </tr>
         {% for prispevek in casopis.prispevky if prispevek.stav.id == 2 %}
         <tr>
-            <td>{{ prispevek.datumVytvoreni|date('Y.m.d H.i.s') }}</td>
+            <td>{{ prispevek.datumVytvoreni|date('d.m.Y H:i') }}</td>
             <td>{{ prispevek.nazev }}</td>
             <td>{{ prispevek.text|truncate(250, true) }}</td>
             <td>{{ prispevek.tema }}</td>
