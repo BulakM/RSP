@@ -16,6 +16,7 @@
                 <th>Rok</th>
                 <th>Číslo</th>
                 <th>Ročník</th>
+                <th>Témata</th>
                 <th>Uzávěrka</th>
             </tr>
             {% for casopis in uzaverka if casopis.uzaverka|date('d.m.Y H:i') > 'now'|date('d.m.Y H:i') %}
@@ -23,6 +24,7 @@
                 <td>{{ casopis.rok }}</td>
                 <td>{{ casopis.cislo }}</td>
                 <td>{{ casopis.rocnik }}</td>
+                <td>{% for tema in casopis.temata %}{{ tema }}{% if not loop.last %}, {% endif %}{% endfor %}</td>
                 <td>{{ casopis.uzaverka|date('d.m.Y H:i') }}</td>
             </tr>
             {% endfor %}
