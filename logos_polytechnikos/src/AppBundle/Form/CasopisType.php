@@ -27,7 +27,6 @@ class CasopisType extends AbstractType
             'data' => ($builder->getData()->getId() != null) ? $builder->getData()->getRok() : date('Y')
             ))
           ->add('cislo', IntegerType::class, array('label' => 'Číslo časopisu', 'attr' => array('min' => 1)))
-          ->add('rocnik', IntegerType::class, array('label' => 'Ročník časopisu', 'attr' => array('min' => 1)))
           ->add('casopis', FileType::class, array('label' => 'Časopis v pdf', 'required' => false, 'data_class' => null))
           ->add('temata', EntityType::class, array(
               'class' => Tema::class,

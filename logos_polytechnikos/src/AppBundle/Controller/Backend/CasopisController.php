@@ -70,6 +70,7 @@ class CasopisController extends Controller
             $casopis->setCasopis($fileName);
         }
 
+        $casopis->setRocnik((int) (substr($casopis->getRok(), -2)) - 9);
         $em = $this->getDoctrine()->getManager();
         $em->persist($casopis);
         $em->flush();
@@ -121,6 +122,7 @@ class CasopisController extends Controller
           }
           else { $casopis->setCasopis($oldCasopis); }
 
+          $casopis->setRocnik((int) (substr($casopis->getRok(), -2)) - 9);
           $em->persist($casopis);
           $em->flush();
 

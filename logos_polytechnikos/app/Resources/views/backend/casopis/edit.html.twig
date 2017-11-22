@@ -20,12 +20,6 @@
                 {{ form_row(form.cislo) }}
               </div>
               <div class="col-md-6 col-sm-6 col-xs-12">
-                {{ form_row(form.rocnik) }}
-              </div>
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                  {{ form_row(form.uzaverka) }}
-              </div>
-              <div class="col-md-6 col-sm-6 col-xs-12">
                 {{ form_row(form.temata) }}
               </div>
               <div class="col-md-6 col-sm-6 col-xs-12">
@@ -48,6 +42,9 @@
                       {{ form_errors(form.casopis) }}
                       {{ form_widget(form.casopis) }}
                   {% endif %}
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                  {{ form_row(form.uzaverka) }}
               </div>
               <div class="col-md-12 col-sm-12 col-xs-12">
                   <br>
