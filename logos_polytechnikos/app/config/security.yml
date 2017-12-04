@@ -38,4 +38,4 @@ security:
 
 
     access_control:
-        - { path: ^/redakce, role: IS_AUTHENTICATED_FULLY }
+        - { path: ^/redakce, role: [IS_AUTHENTICATED_FULLY, IS_AUTHENTICATED_REMEMBERED] }
