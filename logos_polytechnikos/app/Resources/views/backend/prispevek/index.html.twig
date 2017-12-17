@@ -79,19 +79,21 @@
                  class="btn btn-info">
                   <span class="glyphicon glyphicon-search"></span>
               </a>
-              {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')%}
-                {% if stav.id != -1 %}
-                  <a href="{{ path('zmenit_stav_prispevek', {'prispevek' : prispevek.id, 'stav' : -1}) }}"
-                     class="btn btn-danger confirm">
-                      <span class="glyphicon glyphicon-remove"></span>
-                  </a>
-                {% else %}
-                    <a href="{{ path('zmenit_stav_prispevek', {'prispevek' : prispevek.id, 'stav' : 0}) }}"
-                       class="btn btn-success confirm">
-                        <span class="glyphicon glyphicon-arrow-up"></span>
-                    </a>
+              {% if prispevek.stav.id != 3 %}
+                  {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR') %}
+                    {% if stav.id != -1 %}
+                      <a href="{{ path('zmenit_stav_prispevek', {'prispevek' : prispevek.id, 'stav' : -1}) }}"
+                         class="btn btn-danger confirm">
+                          <span class="glyphicon glyphicon-remove"></span>
+                      </a>
+                    {% else %}
+                        <a href="{{ path('zmenit_stav_prispevek', {'prispevek' : prispevek.id, 'stav' : 0}) }}"
+                           class="btn btn-success confirm">
+                            <span class="glyphicon glyphicon-arrow-up"></span>
+                        </a>
+                    {% endif %}
+                  {% endif %}
                 {% endif %}
-              {% endif %}
             </td>
           </tr>
           {% endfor %}
